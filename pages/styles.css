@@ -1,0 +1,21 @@
+@import url(../vendor/normalize.css);
+@import url(../vendor/fonts/fonts.css);
+
+@import url(../blocks/page/page.css);
+@import url(../variables/variables.css);
+
+
+.container {
+  max-width: 880px;
+  margin: 0 200px 0 200px;
+}
+
+.logo {
+  margin: 45px 0 0;
+}
+
+.hr-line {
+  margin-top: 41px;
+  border-width: 1px;
+  color: var(--extra-text-color);
+}
