@@ -1,0 +1,5 @@
+.hr-line {
+  margin: 41px 0 40px;
+  border: 1px solid var(--extra-text-color);
+  opacity: 0.7;
+}

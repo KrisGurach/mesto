@@ -1,0 +1,9 @@
+.profile__info {
+  grid-area: info;
+  margin-right: 18px;
+  padding-top: 12px;
+  color: var(--main-text-color);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}

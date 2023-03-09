@@ -1,0 +1,7 @@
+.profile {
+  margin-bottom: 51px;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(min-content, max-content));
+  grid-template-areas:
+  "avatar info edit-button add-button";
+}

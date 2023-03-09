@@ -1,0 +1,16 @@
+.add-button {
+  grid-area: add-button;
+  justify-self: flex-end;
+  margin: 35px 0 0 0;
+  padding: 0;
+  border: 0;
+  background-image: url(../../images/add-button.svg);
+  background-color: var(--main-color);
+  width: 150px;
+  height: 50px;
+  cursor: pointer;
+}
+
+.add-button:hover {
+  opacity: 0.6;
+}

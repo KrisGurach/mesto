@@ -1,0 +1,15 @@
+.edit-button {
+  grid-area: edit-button;
+  margin: 27px 0 0 0;
+  padding: 0;
+  border: 0;
+  background-image: url(../../images/edit-button.svg);
+  background-color: var(--main-color);
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
+}
+
+.edit-button:hover {
+  opacity: 0.6;
+}
