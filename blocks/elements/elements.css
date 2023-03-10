@@ -7,7 +7,7 @@
   grid-row-gap: 20px;
 }
 
-@media screen and (max-width: 930px) {
+@media screen and (min-width: 631px) and (max-width: 930px) {
   .elements {
     max-width: 581px;
   }

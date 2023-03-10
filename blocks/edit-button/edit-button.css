@@ -13,3 +13,21 @@
 .edit-button:hover {
   opacity: 0.6;
 }
+
+@media screen and (min-width: 630px) and (max-width: 756px) {
+  .edit-button {
+    margin: 21px 0 0 0;
+  }
+}
+
+@media screen and (min-width: 320px) and (max-width: 630px) {
+  .edit-button {
+    margin: 0;
+    background-image: url(../../images/edit-button-mobile.svg);
+    width: 18px;
+    height: 18px;
+    position: absolute;
+    top: 280px;
+    right: calc((100% - 20px - 190px) - (((100% - 190px)/2)));
+  }
+}
