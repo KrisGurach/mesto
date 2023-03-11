@@ -7,16 +7,15 @@
 @import url(../blocks/container/container.css);
 
 @import url(../blocks/logo/logo.css);
-@import url(../blocks/hr-line/hr-line.css);
+@import url(../blocks/header/header.css);
 
 @import url(../blocks/profile/profile.css);
 @import url(../blocks/profile/__avatar/profile__avatar.css);
 @import url(../blocks/profile/__info/profile__info.css);
 @import url(../blocks/profile/__info-name/profile__info-name.css);
 @import url(../blocks/profile/__info-profession/profile__info-profession.css);
-
-@import url(../blocks/edit-button/edit-button.css);
-@import url(../blocks/add-button/add-button.css);
+@import url(../blocks/profile/__edit-button/profile__edit-button.css);
+@import url(../blocks/profile/__add-button/profile__add-button.css);
 
 @import url(../blocks/elements/elements.css);
 @import url(../blocks/element/element.css);

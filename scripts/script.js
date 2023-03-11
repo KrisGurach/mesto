@@ -1,5 +1,5 @@
 // Присвоим переменные найденным элементам (кнопка открытия окна редактироваия, кнопка закрытия окна редактирования)
-const editButton = document.querySelector(".edit-button");
+const editButton = document.querySelector(".profile__edit-button");
 const closeButton = document.querySelector(".popup__close-button");
 
 // Выберем непосредственно попап
@@ -13,8 +13,8 @@ const nameUser = document.querySelector(".profile__info-name");
 const professionUser = document.querySelector(".profile__info-profession");
 
 // Переменные для полей попапа
-const nameInput = document.querySelector(".popup__fieldset_name");
-const professionInput = document.querySelector(".popup__fieldset_profession");
+const nameInput = document.querySelector(".popup__fieldset_type_name");
+const professionInput = document.querySelector(".popup__fieldset_type_profession");
 
 // Функция, отвечающая за отображение текста профиля в полях попапа
 function setPopUp(){
@@ -22,15 +22,15 @@ function setPopUp(){
   professionInput.value = professionUser.textContent;
 }
 
-// Два происходящих события по клику пользователя (открытие и закрытие попапа)
-editButton.addEventListener('click', function(){
+// Функция открытия попапа
+function openPopUp(){
   popup.classList.add("popup_opened");
-  setPopUp();
-});
+}
 
-closeButton.addEventListener('click', function(){
+// Функция закрытия попапа
+function closePopUp(){
   popup.classList.remove("popup_opened");
-});
+}
 
 // Функция, отвечющая за редактирование информации
 function handleFormSubmit (evt) {
@@ -39,10 +39,18 @@ function handleFormSubmit (evt) {
     nameUser.textContent = nameInput.value;
     professionUser.textContent = professionInput.value;
 
-    popup.classList.remove("popup_opened");
+    closePopUp();
 }
 
 formElement.addEventListener('submit', handleFormSubmit);
+
+// Два происходящих события по клику пользователя (открытие и закрытие попапа)
+editButton.addEventListener('click', function(){
+  setPopUp();
+  openPopUp();
+});
+
+closeButton.addEventListener('click', closePopUp);
 
 
 

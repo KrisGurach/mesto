@@ -15,61 +15,60 @@
   <div class="page">
     <div class="container">
       <header class="header">
-        <img src="images/logotype.svg" class="logo" alt="логотип Место">
-        <hr class="hr-line">
+        <img src="images/logotype.svg" class="logo">
       </header>
 
       <main>
         <section class="profile" aria-label="Личные данные">
-          <img src="images/user-photo.jpg" class="profile__avatar" alt="Фото пользователя">
+          <img src="images/user-photo.jpg" class="profile__avatar">
           <div class="profile__info">
-            <p class="profile__info-name">Кристина</p>
+            <h1 class="profile__info-name">Кристина</h1>
             <p class="profile__info-profession">Исследователь JavaScript</p>
           </div>
-          <button class="edit-button" type="button"></button>
-          <button class="add-button" type="button"></button>
+          <button class="profile__edit-button" type="button"></button>
+          <button class="profile__add-button" type="button"></button>
         </section>
 
         <section class="elements" aria-label="Фотокарточки">
           <div class="element">
-            <img src="images/kizhi.jpg" class="element__photo" alt="Преображенский собор на острове Кижи на фоне чистого синего неба">
+            <img src="images/kizhi.jpg" class="element__photo">
             <div class="element__description">
-              <p class="element__place">Кижи</p>
+              <h2 class="element__place">Кижи</h2>
               <button class="element__like" type="button"></button>
             </div>
           </div>
           <div class="element">
-            <img src="images/saint-petersburg.JPG" class="element__photo" alt="Лахта на фоне ярко-красного летнего заката">
+            <img src="images/saint-petersburg.JPG" class="element__photo">
             <div class="element__description">
-              <p class="element__place">Санкт-Петербург</p>
+              <h2 class="element__place">Санкт-Петербург</h2>
               <button class="element__like" type="button"></button>
             </div>
           </div>
           <div class="element">
-            <img src="images/krondshtat.jpg" class="element__photo" alt="Золотая осень и Морской собор в Крондштате">
+            <img src="images/krondshtat.jpg" class="element__photo">
             <div class="element__description">
-              <p class="element__place">Крондштат</p>
+              <h2 class="element__place">Крондштат</h2>
               <button class="element__like" type="button"></button>
             </div>
           </div>
           <div class="element">
-            <img src="images/karelia.jpg" class="element__photo" alt="Золотая осень в нетронутых лесах Карелии">
+            <img src="images/karelia.jpg" class="element__photo">
             <div class="element__description">
-              <p class="element__place">Карелия</p>
+              <h2 class="element__place">Карелия</h2>
               <button class="element__like" type="button"></button>
             </div>
           </div>
           <div class="element">
-            <img src="images/saint-petersburg-2.jpg" class="element__photo" alt="Готический собор в Шуваловском парке">
+            <img src="images/saint-petersburg-2.jpg" class="element__photo">
             <div class="element__description">
-              <p class="element__place">Санкт-Петербург</p>
+              <h2 class="element__place">Санкт-Петербург</h2>
               <button class="element__like" type="button"></button>
             </div>
           </div>
           <div class="element">
-            <img src="images/abhazia.jpg" class="element__photo" alt="Туман над величественными горами Абхазии">
+            <img src="images/abhazia.jpg" class="element__photo">
             <div class="element__description">
-              <p class="element__place">Абхазия</p>
+              <h2 class="element__place">Абхазия</h2>
               <button class="element__like" type="button"></button>
             </div>
           </div>
@@ -80,11 +79,11 @@
         <div class="popup">
           <div class="popup__container">
             <button class="popup__close-button" type="button"></button>
-            <form class="popup__form">
+            <form class="popup__form" name="form-of-edition">
               <h2 class="popup__edit">Редактировать профиль</h2>
-              <input type="text" placeholder="Введите имя" class="popup__fieldset popup__fieldset_name">
-              <input type="text" placeholder="Введите профессию" class="popup__fieldset popup__fieldset_profession">
-              <button class="popup__save-button">Сохранить</button>
+              <input type="text" placeholder="Введите имя" class="popup__fieldset popup__fieldset_type_name">
+              <input type="text" placeholder="Введите профессию" class="popup__fieldset popup__fieldset_type_profession">
+              <button type="submit" class="popup__save-button">Сохранить</button>
             </form>
           </div>
         </div>
