@@ -1,6 +1,4 @@
 .element__like_active {
   background-image: url(../../../../images/like-button-active.svg);
-  width: 22px;
-  height: 19px;
   opacity: 1;
 }
