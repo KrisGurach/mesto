@@ -1,0 +1,19 @@
+.element__remove {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background-image: url(../../../images/delete-button.svg);
+  background-color: rgb(0, 0, 0, 0.0);
+  width: 18px;
+  height: 19px;
+  border: 0;
+  cursor: pointer;
+  z-index: 2;
+}
+
+.element__remove:hover {
+  opacity: 0.6;
+}
+
+
+
