@@ -32,7 +32,7 @@
         <section class="elements" aria-label="Фотокарточки">
           <template id="gallery">
             <div class="element">
-              <img class="element__photo" alt="Фото достопримечательности">
+              <img class="element__photo" src="#" alt="#">
               <button class="element__remove" type="button"></button>
               <div class="element__description">
                 <h2 class="element__place"></h2>
@@ -42,6 +42,18 @@
           </template>
         </section>
       </main>
+
+      <section class="form-edit" aria-label="Окно увеличенной фотографии">
+        <div class="popup popup_photo">
+          <div class="popup__container">
+            <button class="popup__close-button popup__close-button_photo" type="button"></button>
+            <figure class="popup__figure">
+              <img class="popup__scale-image" src="#" alt="#">
+              <figcaption class="popup__figcaption"></figcaption>
+            </figure>
+          </div>
+        </div>
+      </section>
 
       <section class="form-edit" aria-label="Окно редактирования информации о себе">
         <div class="popup popup_edition">
@@ -67,14 +79,6 @@
               <input type="text" name="link" placeholder="Ссылка на картинку" class="popup__fieldset popup__fieldset_type_link">
               <button type="submit" class="popup__save-button">Сохранить</button>
             </form>
-          </div>
-        </div>
-      </section>
-
-      <section class="form-edit" aria-label="Окно добавления новой фотографии">
-        <div class="popup popup_photo">
-          <div class="popup__container">
-            <button class="popup__close-button popup__close-button_photo" type="button"></button>
           </div>
         </div>
       </section>
