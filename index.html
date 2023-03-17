@@ -30,59 +30,53 @@
         </section>
 
         <section class="elements" aria-label="Фотокарточки">
-          <div class="element">
-            <img src="images/kizhi.jpg" class="element__photo" alt="Преображенский собор на острове Кижи на фоне чистого синего неба">
-            <div class="element__description">
-              <h2 class="element__place">Кижи</h2>
-              <button class="element__like" type="button"></button>
+          <template id="gallery">
+            <div class="element">
+              <img class="element__photo" src="#" alt="#">
+              <button class="element__remove" type="button"></button>
+              <div class="element__description">
+                <h2 class="element__place"></h2>
+                <button class="element__like" type="button"></button>
+              </div>
             </div>
-          </div>
-          <div class="element">
-            <img src="images/saint-petersburg.JPG" class="element__photo" alt="Лахта на фоне ярко-красного летнего заката">
-            <div class="element__description">
-              <h2 class="element__place">Санкт-Петербург</h2>
-              <button class="element__like" type="button"></button>
-            </div>
-          </div>
-          <div class="element">
-            <img src="images/krondshtat.jpg" class="element__photo" alt="Золотая осень и Морской собор в Крондштате">
-            <div class="element__description">
-              <h2 class="element__place">Крондштат</h2>
-              <button class="element__like" type="button"></button>
-            </div>
-          </div>
-          <div class="element">
-            <img src="images/karelia.jpg" class="element__photo" alt="Золотая осень в нетронутых лесах Карелии">
-            <div class="element__description">
-              <h2 class="element__place">Карелия</h2>
-              <button class="element__like" type="button"></button>
-            </div>
-          </div>
-          <div class="element">
-            <img src="images/saint-petersburg-2.jpg" class="element__photo" alt="Готический собор в Шуваловском парке">
-            <div class="element__description">
-              <h2 class="element__place">Санкт-Петербург</h2>
-              <button class="element__like" type="button"></button>
-            </div>
-          </div>
-          <div class="element">
-            <img src="images/abhazia.jpg" class="element__photo" alt="Туман над величественными горами Абхазии">
-            <div class="element__description">
-              <h2 class="element__place">Абхазия</h2>
-              <button class="element__like" type="button"></button>
-            </div>
-          </div>
+          </template>
         </section>
       </main>
 
-      <section class="form-edit" aria-label="Окно редактирования информации о себе">
-        <div class="popup">
+      <section class="form-edit" aria-label="Окно увеличенной фотографии">
+        <div class="popup popup_photo">
           <div class="popup__container">
-            <button class="popup__close-button" type="button"></button>
+            <button class="popup__close-button popup__close-button_photo" type="button"></button>
+            <figure class="popup__figure">
+              <img class="popup__scale-image" src="#" alt="#">
+              <figcaption class="popup__figcaption"></figcaption>
+            </figure>
+          </div>
+        </div>
+      </section>
+
+      <section class="form-edit" aria-label="Окно редактирования информации о себе">
+        <div class="popup popup_edition">
+          <div class="popup__container popup__container_min-size">
+            <button class="popup__close-button popup__close-button_edit" type="button"></button>
             <form class="popup__form" name="form-of-edition">
               <h2 class="popup__edit">Редактировать профиль</h2>
               <input type="text" name="user-name" placeholder="Введите имя" class="popup__fieldset popup__fieldset_type_name">
               <input type="text" name="user-profession" placeholder="Введите профессию" class="popup__fieldset popup__fieldset_type_profession">
+              <button type="submit" class="popup__save-button">Сохранить</button>
+            </form>
+          </div>
+        </div>
+      </section>
+
+      <section class="form-edit" aria-label="Окно добавления новой фотографии">
+        <div class="popup popup_new-card">
+          <div class="popup__container popup__container_min-size">
+            <button class="popup__close-button popup__close-button_new-card" type="button"></button>
+            <form class="popup__form popup__form_new-card" name="form-of-edition">
+              <h2 class="popup__edit">Новое место</h2>
+              <input type="text" name="place" placeholder="Название" class="popup__fieldset popup__fieldset_type_place">
+              <input type="text" name="link" placeholder="Ссылка на картинку" class="popup__fieldset popup__fieldset_type_link">
               <button type="submit" class="popup__save-button">Сохранить</button>
             </form>
           </div>
