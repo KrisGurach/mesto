@@ -44,9 +44,9 @@
       </main>
 
       <section class="form-edit" aria-label="Окно увеличенной фотографии">
-        <div class="popup popup_photo">
+        <div class="popup popup_type_photo">
           <div class="popup__container">
-            <button class="popup__close-button popup__close-button_photo" type="button"></button>
+            <button class="popup__close-button popup__close-button_type_photo" type="button"></button>
             <figure class="popup__figure">
               <img class="popup__scale-image" src="#" alt="#">
               <figcaption class="popup__figcaption"></figcaption>
@@ -56,10 +56,10 @@
       </section>
 
       <section class="form-edit" aria-label="Окно редактирования информации о себе">
-        <div class="popup popup_edition">
+        <div class="popup popup_type_edition">
           <div class="popup__container popup__container_min-size">
-            <button class="popup__close-button popup__close-button_edit" type="button"></button>
-            <form class="popup__form" name="form-of-edition">
+            <button class="popup__close-button popup__close-button_type_edition" type="button"></button>
+            <form class="popup__form popup__form_type_edition" name="form-of-edition">
               <h2 class="popup__edit">Редактировать профиль</h2>
               <input type="text" name="user-name" placeholder="Введите имя" class="popup__fieldset popup__fieldset_type_name">
               <input type="text" name="user-profession" placeholder="Введите профессию" class="popup__fieldset popup__fieldset_type_profession">
@@ -70,10 +70,10 @@
       </section>
 
       <section class="form-edit" aria-label="Окно добавления новой фотографии">
-        <div class="popup popup_new-card">
+        <div class="popup popup_type_new-card">
           <div class="popup__container popup__container_min-size">
-            <button class="popup__close-button popup__close-button_new-card" type="button"></button>
-            <form class="popup__form popup__form_new-card" name="form-of-edition">
+            <button class="popup__close-button popup__close-button_type_new-card" type="button"></button>
+            <form class="popup__form popup__form_type_new-card" name="form-of-edition">
               <h2 class="popup__edit">Новое место</h2>
               <input type="text" name="place" placeholder="Название" class="popup__fieldset popup__fieldset_type_place">
               <input type="text" name="link" placeholder="Ссылка на картинку" class="popup__fieldset popup__fieldset_type_link">
@@ -88,6 +88,7 @@
       </footer>
     </div>
   </div>
+  <script src="scripts/cards.js"></script>
   <script src="scripts/script.js"></script>
 </body>
 

@@ -20,9 +20,9 @@ function setPopUpEdit(){
 }
 
 // Функция, отвечющая за редактирование информации
-const formElement = document.querySelector(".popup__form");
+const formEdition = document.querySelector(".popup__form_type_edition");
 
-function handleFormSubmit (evt) {
+function handleFormEditionSubmit (evt) {
     evt.preventDefault();
 
     nameUser.textContent = nameInput.value;
@@ -31,49 +31,21 @@ function handleFormSubmit (evt) {
     closePopUp(popupEdition);
 }
 
-formElement.addEventListener('submit', handleFormSubmit);
+formEdition.addEventListener('submit', handleFormEditionSubmit);
 
 // Два происходящих события по клику пользователя (открытие и закрытие попапа)
-const popupEdition = document.querySelector(".popup_edition");
-const editButton = document.querySelector(".profile__edit-button");
-const closeButtonEdit = popupEdition.querySelector(".popup__close-button_edit");
+const popupEdition = document.querySelector(".popup_type_edition");
+const buttonEditProfile = document.querySelector(".profile__edit-button");
+const buttonCloseEdit = popupEdition.querySelector(".popup__close-button_type_edition");
 
-editButton.addEventListener('click', function(){
+buttonEditProfile.addEventListener('click', function(){
   setPopUpEdit();
   openPopUp(popupEdition);
 });
 
-closeButtonEdit.addEventListener('click', function(){
+buttonCloseEdit.addEventListener('click', function(){
   closePopUp(popupEdition);
 });
-
-// Заполнение карточек
-const initialCards = [
-  {
-    name: 'Архыз',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/arkhyz.jpg'
-  },
-  {
-    name: 'Челябинская область',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/chelyabinsk-oblast.jpg'
-  },
-  {
-    name: 'Иваново',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/ivanovo.jpg'
-  },
-  {
-    name: 'Камчатка',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kamchatka.jpg'
-  },
-  {
-    name: 'Холмогорский район',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kholmogorsky-rayon.jpg'
-  },
-  {
-    name: 'Байкал',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/baikal.jpg'
-  }
-];
 
 function createElement(item) {
   const userGallery = document.querySelector("#gallery").content;
@@ -90,20 +62,20 @@ function createElement(item) {
 initialCards.forEach(createElement);
 
 // Открытие и закрытие попапа добавления новых фотографий и ее сохранение
-const popupNewCard = document.querySelector(".popup_new-card");
-const addButton = document.querySelector(".profile__add-button");
-const closeButtonNewCard = popupNewCard.querySelector(".popup__close-button_new-card");
+const popupNewCard = document.querySelector(".popup_type_new-card");
+const buttonAddCard = document.querySelector(".profile__add-button");
+const buttonCloseNewCard = popupNewCard.querySelector(".popup__close-button_type_new-card");
 
-addButton.addEventListener('click', function(){
+buttonAddCard.addEventListener('click', function(){
   openPopUp(popupNewCard);
 });
 
-closeButtonNewCard.addEventListener('click', function() {
+buttonCloseNewCard.addEventListener('click', function() {
   closePopUp(popupNewCard);
 });
 
 // Функция добавления новой карточки пользователем
-const cardAddingElement = document.querySelector(".popup__form_new-card");
+const formAddingElement = document.querySelector(".popup__form_type_new-card");
 
 function addElement(evt){
   evt.preventDefault();
@@ -116,7 +88,7 @@ function addElement(evt){
   closePopUp(popupNewCard);
 }
 
-cardAddingElement.addEventListener('submit', addElement);
+formAddingElement.addEventListener('submit', addElement);
 
 // Функция постановки и удаления лайка
 const likeButtons = document.querySelectorAll(".element__like");
@@ -134,9 +106,9 @@ removeCardButtons.forEach(button => button.addEventListener('click', function(){
  }));
 
 // Открытие и закрытие увеличенной фотографии
-const popupPhoto = document.querySelector(".popup_photo");
+const popupPhoto = document.querySelector(".popup_type_photo");
 const photos = document.querySelectorAll(".element__photo");
-const closeButtonPhoto = popupPhoto.querySelector(".popup__close-button_photo");
+const buttonClosePhoto = popupPhoto.querySelector(".popup__close-button_type_photo");
 
 photos.forEach(photo => photo.addEventListener('click', function(){
   const caption = document.querySelector(".popup__figcaption");
@@ -149,7 +121,7 @@ photos.forEach(photo => photo.addEventListener('click', function(){
   openPopUp(popupPhoto);
 }));
 
-closeButtonPhoto.addEventListener('click', function(){
+buttonClosePhoto.addEventListener('click', function(){
   closePopUp(popupPhoto);
 });
 
