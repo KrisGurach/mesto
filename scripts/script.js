@@ -1,110 +1,52 @@
-// Общие функции открытия и закрытия
-function openPopUp(popup){
-  popup.classList.add("popup_opened");
-}
+// Поиск всех необходимых DOM-элементов
+const popupEdition = document.querySelector(".popup_type_edition");
 
-function closePopUp(popup){
-  popup.classList.remove("popup_opened");
-}
+const buttonEditProfile = document.querySelector(".profile__edit-button");
+const buttonCloseEdit = popupEdition.querySelector(".popup__close-button_type_edition");
 
-// Функция, отвечающая за отображение текста профиля в полях попапа
+const formEdition = document.querySelector(".popup__form_type_edition");
 const nameInput = document.querySelector(".popup__fieldset_type_name");
 const professionInput = document.querySelector(".popup__fieldset_type_profession");
 
 const nameUser = document.querySelector(".profile__info-name");
 const professionUser = document.querySelector(".profile__info-profession");
 
+const popupNewCard = document.querySelector(".popup_type_new-card");
+
+const buttonAddCard = document.querySelector(".profile__add-button");
+const buttonCloseNewCard = popupNewCard.querySelector(".popup__close-button_type_new-card");
+
+const formAddingElement = document.querySelector(".popup__form_type_new-card");
+
+const popupPhoto = document.querySelector(".popup_type_photo");
+const buttonClosePhoto = document.querySelector(".popup__close-button_type_photo");
+
+// Общие функции открытия и закрытия
+function openPopUp(popup){
+  popup.classList.add("popup_opened");
+};
+
+function closePopUp(popup){
+  popup.classList.remove("popup_opened");
+};
+
+// Функция, отвечающая за отображение текста профиля в полях попапа
 function setPopUpEdit(){
   nameInput.value = nameUser.textContent;
   professionInput.value = professionUser.textContent;
-}
+};
 
 // Функция, отвечющая за редактирование информации
-const formElement = document.querySelector(".popup__form");
-
-function handleFormSubmit (evt) {
+function handleFormEditionSubmit (evt) {
     evt.preventDefault();
 
     nameUser.textContent = nameInput.value;
     professionUser.textContent = professionInput.value;
 
     closePopUp(popupEdition);
-}
-
-formElement.addEventListener('submit', handleFormSubmit);
-
-// Два происходящих события по клику пользователя (открытие и закрытие попапа)
-const popupEdition = document.querySelector(".popup_edition");
-const editButton = document.querySelector(".profile__edit-button");
-const closeButtonEdit = popupEdition.querySelector(".popup__close-button_edit");
-
-editButton.addEventListener('click', function(){
-  setPopUpEdit();
-  openPopUp(popupEdition);
-});
-
-closeButtonEdit.addEventListener('click', function(){
-  closePopUp(popupEdition);
-});
-
-// Заполнение карточек
-const initialCards = [
-  {
-    name: 'Архыз',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/arkhyz.jpg'
-  },
-  {
-    name: 'Челябинская область',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/chelyabinsk-oblast.jpg'
-  },
-  {
-    name: 'Иваново',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/ivanovo.jpg'
-  },
-  {
-    name: 'Камчатка',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kamchatka.jpg'
-  },
-  {
-    name: 'Холмогорский район',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kholmogorsky-rayon.jpg'
-  },
-  {
-    name: 'Байкал',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/baikal.jpg'
-  }
-];
-
-function createElement(item) {
-  const userGallery = document.querySelector("#gallery").content;
-  const elements = document.querySelector(".elements");
-
-  const userElement = userGallery.querySelector(".element").cloneNode(true);
-
-  userElement.querySelector(".element__photo").src = item.link;
-  userElement.querySelector(".element__place").textContent = item.name;
-
-  elements.prepend(userElement);
 };
 
-initialCards.forEach(createElement);
-
-// Открытие и закрытие попапа добавления новых фотографий и ее сохранение
-const popupNewCard = document.querySelector(".popup_new-card");
-const addButton = document.querySelector(".profile__add-button");
-const closeButtonNewCard = popupNewCard.querySelector(".popup__close-button_new-card");
-
-addButton.addEventListener('click', function(){
-  openPopUp(popupNewCard);
-});
-
-closeButtonNewCard.addEventListener('click', function() {
-  closePopUp(popupNewCard);
-});
-
 // Функция добавления новой карточки пользователем
-const cardAddingElement = document.querySelector(".popup__form_new-card");
-
 function addElement(evt){
   evt.preventDefault();
   const newCard = {
@@ -112,45 +54,78 @@ function addElement(evt){
       link: document.querySelector(".popup__fieldset_type_link").value
   };
 
-  createElement(newCard);
+  renderElement(newCard);
   closePopUp(popupNewCard);
-}
+};
 
-cardAddingElement.addEventListener('submit', addElement);
+// Функция создания элементов из массива и формирования новой карточки
+function createElement(item) {
+  const userGallery = document.querySelector("#gallery").content;
+  const userElement = userGallery.querySelector(".element").cloneNode(true);
 
-// Функция постановки и удаления лайка
-const likeButtons = document.querySelectorAll(".element__like");
+  const photo = userElement.querySelector(".element__photo");
+  photo.src = item.link;
+  userElement.querySelector(".element__place").textContent = item.name;
 
-likeButtons.forEach(button => button.addEventListener('click', function(){
-  button.classList.toggle("element__like_active")
- }));
+  // Добавление eventListener на кнопки
+  const buttonLikeCard = userElement.querySelector(".element__like");
+  const buttonRemoveCard = userElement.querySelector(".element__remove");
 
- // Удаление фотокарточки
-const removeCardButtons = document.querySelectorAll(".element__remove");
+  buttonLikeCard.addEventListener('click', function(){
+    buttonLikeCard.classList.toggle("element__like_active")
+  });
 
-removeCardButtons.forEach(button => button.addEventListener('click', function(){
-  const card = button.closest('.element');
-  card.remove();
- }));
+  buttonRemoveCard.addEventListener('click', function(){
+    const card = buttonRemoveCard.closest('.element');
+    card.remove();
+  });
 
-// Открытие и закрытие увеличенной фотографии
-const popupPhoto = document.querySelector(".popup_photo");
-const photos = document.querySelectorAll(".element__photo");
-const closeButtonPhoto = popupPhoto.querySelector(".popup__close-button_photo");
+  photo.addEventListener('click', function(){
+    const caption = document.querySelector(".popup__figcaption");
+    const scaleImage = document.querySelector(".popup__scale-image");
+    const card = photo.closest(".element");
+    scaleImage.src = photo.src;
+    scaleImage.alt = card.innerText;
+    caption.textContent = card.innerText;
 
-photos.forEach(photo => photo.addEventListener('click', function(){
-  const caption = document.querySelector(".popup__figcaption");
-  const scaleImage = document.querySelector(".popup__scale-image");
-  const card = photo.closest(".element");
-  scaleImage.src = photo.src;
-  scaleImage.alt = card.innerText;
-  caption.textContent = card.innerText;
+    openPopUp(popupPhoto);
+  });
 
-  openPopUp(popupPhoto);
-}));
+  return userElement;
+};
 
-closeButtonPhoto.addEventListener('click', function(){
-  closePopUp(popupPhoto);
+function renderElement(i) {
+  const elements = document.querySelector(".elements");
+  const newAddingCard = createElement(i);
+  elements.prepend(newAddingCard);
+};
+
+initialCards.forEach(renderElement);
+
+// Сохранение информации при нажатии кнопки "сохранить" у окон редактирования профиля и добавления новых фотографий
+formEdition.addEventListener('submit', handleFormEditionSubmit);
+formAddingElement.addEventListener('submit', addElement);
+
+// Открытие и закрытие окна редактирования профиля
+buttonEditProfile.addEventListener('click', function(){
+  setPopUpEdit();
+  openPopUp(popupEdition);
 });
 
+buttonCloseEdit.addEventListener('click', function(){
+  closePopUp(popupEdition);
+});
 
+// Открытие и закрытие окна добавления новых фотографий
+buttonAddCard.addEventListener('click', function(){
+  openPopUp(popupNewCard);
+});
+
+buttonCloseNewCard.addEventListener('click', function() {
+  closePopUp(popupNewCard);
+});
+
+// Открытие и закрытие окна увеличенной фотографии
+buttonClosePhoto.addEventListener('click', function(){
+  closePopUp(popupPhoto);
+});
