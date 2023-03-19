@@ -47,19 +47,25 @@ buttonCloseEdit.addEventListener('click', function(){
   closePopUp(popupEdition);
 });
 
+
+
 function createElement(item) {
   const userGallery = document.querySelector("#gallery").content;
-  const elements = document.querySelector(".elements");
-
   const userElement = userGallery.querySelector(".element").cloneNode(true);
 
   userElement.querySelector(".element__photo").src = item.link;
   userElement.querySelector(".element__place").textContent = item.name;
 
-  elements.prepend(userElement);
+  return userElement;
 };
 
-initialCards.forEach(createElement);
+function renderElement(i) {
+  const elements = document.querySelector(".elements");
+  const newAddingCard = createElement(i);
+  elements.prepend(newAddingCard);
+};
+
+initialCards.forEach(renderElement);
 
 // Открытие и закрытие попапа добавления новых фотографий и ее сохранение
 const popupNewCard = document.querySelector(".popup_type_new-card");
