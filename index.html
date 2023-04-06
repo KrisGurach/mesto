@@ -57,10 +57,12 @@
       <section class="popup popup_type_edition" aria-label="Окно редактирования информации о себе">
         <div class="popup__container popup__container_min-size">
           <button class="popup__close-button popup__close-button_type_edition" type="button"></button>
-          <form class="popup__form popup__form_type_edition" name="form-of-edition">
+          <form novalidate class="popup__form popup__form_type_edition" name="form-of-edition">
             <h2 class="popup__edit">Редактировать профиль</h2>
-            <input type="text" name="user-name" placeholder="Введите имя" class="popup__fieldset popup__fieldset_type_name">
-            <input type="text" name="user-profession" placeholder="Введите профессию" class="popup__fieldset popup__fieldset_type_profession">
+            <input type="text" name="name" placeholder="Введите имя" class="popup__fieldset popup__fieldset_type_name" minlength="2" maxlength="40" required>
+            <span class="popup__error popup__error_type_name"></span>
+            <input type="text" name="profession" placeholder="Введите профессию" class="popup__fieldset popup__fieldset_type_profession" minlength="2" maxlength="400" required>
+            <span class="popup__error popup__error_type_profession"></span>
             <button type="submit" class="popup__save-button">Сохранить</button>
           </form>
         </div>
@@ -69,11 +71,13 @@
       <section class="popup popup_type_new-card" aria-label="Окно добавления новой фотографии">
         <div class="popup__container popup__container_min-size">
           <button class="popup__close-button popup__close-button_type_new-card" type="button"></button>
-          <form class="popup__form popup__form_type_new-card" name="form-of-edition">
+          <form novalidate class="popup__form popup__form_type_new-card" name="form-of-new-card">
             <h2 class="popup__edit">Новое место</h2>
-            <input type="text" name="place" placeholder="Название" class="popup__fieldset popup__fieldset_type_place">
-            <input type="text" name="link" placeholder="Ссылка на картинку" class="popup__fieldset popup__fieldset_type_link">
-            <button type="submit" class="popup__save-button">Сохранить</button>
+            <input type="text" name="place" placeholder="Название" class="popup__fieldset popup__fieldset_type_place" minlength="2" maxlength="30" required>
+            <span class="popup__error popup__error_type_place"></span>
+            <input type="url" name="link" placeholder="Ссылка на картинку" class="popup__fieldset popup__fieldset_type_link" pattern="https://.*" required>
+            <span class="popup__error popup__error_type_link"></span>
+            <button type="submit" class="popup__save-button">Создать</button>
           </form>
         </div>
       </section>
@@ -85,6 +89,7 @@
   </div>
   <script src="scripts/cards.js"></script>
   <script src="scripts/script.js"></script>
+  <script src="scripts/live-validation.js"></script>
 </body>
 
 </html>

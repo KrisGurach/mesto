@@ -2,7 +2,7 @@
   position: relative;
   display: flex;
   flex-direction: column;
-  background-color: var(--main-text-color);
+  background-color: var(--white-color);
   border-radius: 10px;
   overflow: hidden;
 }

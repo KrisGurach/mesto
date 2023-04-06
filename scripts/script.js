@@ -108,7 +108,6 @@ formAddingElement.addEventListener('submit', addElement);
 
 // Открытие и закрытие окна редактирования профиля
 buttonEditProfile.addEventListener('click', function(){
-  setPopUpEdit();
   openPopUp(popupEdition);
 });
 
@@ -125,7 +124,23 @@ buttonCloseNewCard.addEventListener('click', function() {
   closePopUp(popupNewCard);
 });
 
-// Открытие и закрытие окна увеличенной фотографии
+// Закрытие окна увеличенной фотографии
 buttonClosePhoto.addEventListener('click', function(){
   closePopUp(popupPhoto);
+});
+
+// Закрытие по клику на overlay
+document.addEventListener('mousedown', function (evt) {
+  if (evt.target.classList.contains('popup')) {
+    const popupOpenedNow = document.querySelector(".popup_opened");
+    closePopUp(popupOpenedNow);
+  };
+});
+
+// Закрытие по кнопке Esc
+document.addEventListener('keyup', function(evt) {
+  if (evt.key === 'Escape') {
+    const popupOpenedNow = document.querySelector(".popup_opened");
+    closePopUp(popupOpenedNow);
+  }
 });
