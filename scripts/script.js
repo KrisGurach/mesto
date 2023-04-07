@@ -5,6 +5,8 @@ const buttonEditProfile = document.querySelector(".profile__edit-button");
 const buttonCloseEdit = popupEdition.querySelector(".popup__close-button_type_edition");
 
 const formEdition = document.querySelector(".popup__form_type_edition");
+const formEditionInputs = formEdition.querySelectorAll(".popup__fieldset");
+const formEditionSaveButton = formEdition.querySelector(".popup__save-button");
 const nameInput = document.querySelector(".popup__fieldset_type_name");
 const professionInput = document.querySelector(".popup__fieldset_type_profession");
 
@@ -17,6 +19,8 @@ const buttonAddCard = document.querySelector(".profile__add-button");
 const buttonCloseNewCard = popupNewCard.querySelector(".popup__close-button_type_new-card");
 
 const formAddingElement = document.querySelector(".popup__form_type_new-card");
+const formAddingElementInputs = formAddingElement.querySelectorAll(".popup__fieldset");
+const formAddingElementSaveButton = formAddingElement.querySelector(".popup__save-button");
 
 const popupPhoto = document.querySelector(".popup_type_photo");
 const buttonClosePhoto = document.querySelector(".popup__close-button_type_photo");
@@ -102,12 +106,25 @@ function renderElement(i) {
 
 initialCards.forEach(renderElement);
 
+// Функция, отвечающая за сброс ошибки при открытии окон ввода данных
+function removeErrorOpenForm(form) {
+  form.querySelectorAll(validationVariables.fieldsetSelector).forEach(fieldset => {
+    const errorFieldsetType = document.querySelector(`.popup__error_type_${fieldset.name}`);
+    if (!fieldset.validity.valid) {
+      hideInputError(fieldset, validationVariables.fieldsetErrorClass,  validationVariables.spanErrorClass, errorFieldsetType);
+    };
+  });
+};
+
 // Сохранение информации при нажатии кнопки "сохранить" у окон редактирования профиля и добавления новых фотографий
 formEdition.addEventListener('submit', handleFormEditionSubmit);
 formAddingElement.addEventListener('submit', addElement);
 
 // Открытие и закрытие окна редактирования профиля
 buttonEditProfile.addEventListener('click', function(){
+  removeErrorOpenForm(popupEdition);
+  setPopUpEdit();
+  toggleButtonState(formEditionInputs, formEditionSaveButton, validationVariables.saveButtonDisabledClass);
   openPopUp(popupEdition);
 });
 
@@ -117,6 +134,9 @@ buttonCloseEdit.addEventListener('click', function(){
 
 // Открытие и закрытие окна добавления новых фотографий
 buttonAddCard.addEventListener('click', function(){
+  formAddingElement.reset();
+  removeErrorOpenForm(popupNewCard);
+  toggleButtonState(formAddingElementInputs, formAddingElementSaveButton, validationVariables.saveButtonDisabledClass);
   openPopUp(popupNewCard);
 });
 
@@ -144,3 +164,5 @@ document.addEventListener('keyup', function(evt) {
     closePopUp(popupOpenedNow);
   }
 });
+
+
