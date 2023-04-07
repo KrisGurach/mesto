@@ -2,7 +2,7 @@
   margin: 0;
   padding: 0;
   max-width: 189px;
-  color: var(--main-color);
+  color: var(--black-color);
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;

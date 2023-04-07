@@ -3,7 +3,7 @@
   padding: 0;
   border: 0;
   background-image: url(../../../images/close-button.svg);
-  background-color: rgb(0, 0, 0, 0.0);
+  background-color: var(--black-opacity-00-color);
   width: 32px;
   height: 32px;
   position: absolute;

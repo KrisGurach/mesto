@@ -3,7 +3,7 @@
   padding: 0;
   border: 0;
   background-image: url(../../../images/like-button.svg);
-  background-color: var(--main-text-color);
+  background-color: var(--white-color);
   width: 22px;
   height: 19px;
   cursor: pointer;
