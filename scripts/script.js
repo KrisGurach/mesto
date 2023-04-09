@@ -14,6 +14,8 @@ const nameUser = document.querySelector(".profile__info-name");
 const professionUser = document.querySelector(".profile__info-profession");
 
 const popupNewCard = document.querySelector(".popup_type_new-card");
+const inputPlace = document.querySelector(".popup__fieldset_type_place");
+const inputLink = document.querySelector(".popup__fieldset_type_link");
 
 const buttonAddCard = document.querySelector(".profile__add-button");
 const buttonCloseNewCard = popupNewCard.querySelector(".popup__close-button_type_new-card");
@@ -22,15 +24,23 @@ const formAddingElement = document.querySelector(".popup__form_type_new-card");
 const formAddingElementInputs = formAddingElement.querySelectorAll(".popup__fieldset");
 const formAddingElementSaveButton = formAddingElement.querySelector(".popup__save-button");
 
+const userGallery = document.querySelector("#gallery").content;
+const elements = document.querySelector(".elements");
+
+const caption = document.querySelector(".popup__figcaption");
+const scaleImage = document.querySelector(".popup__scale-image");
+
 const popupPhoto = document.querySelector(".popup_type_photo");
 const buttonClosePhoto = document.querySelector(".popup__close-button_type_photo");
 
 // Общие функции открытия и закрытия
 function openPopUp(popup){
+  document.addEventListener('keydown', closeByEsc);
   popup.classList.add("popup_opened");
 };
 
 function closePopUp(popup){
+  document.removeEventListener('keydown', closeByEsc);
   popup.classList.remove("popup_opened");
 };
 
@@ -54,8 +64,8 @@ function handleFormEditionSubmit (evt) {
 function addElement(evt){
   evt.preventDefault();
   const newCard = {
-      name: document.querySelector(".popup__fieldset_type_place").value,
-      link: document.querySelector(".popup__fieldset_type_link").value
+      name: inputPlace.value,
+      link: inputLink.value
   };
 
   renderElement(newCard);
@@ -64,11 +74,11 @@ function addElement(evt){
 
 // Функция создания элементов из массива и формирования новой карточки
 function createElement(item) {
-  const userGallery = document.querySelector("#gallery").content;
   const userElement = userGallery.querySelector(".element").cloneNode(true);
 
   const photo = userElement.querySelector(".element__photo");
   photo.src = item.link;
+  photo.alt = item.name;
   userElement.querySelector(".element__place").textContent = item.name;
 
   // Добавление eventListener на кнопки
@@ -85,8 +95,6 @@ function createElement(item) {
   });
 
   photo.addEventListener('click', function(){
-    const caption = document.querySelector(".popup__figcaption");
-    const scaleImage = document.querySelector(".popup__scale-image");
     const card = photo.closest(".element");
     scaleImage.src = photo.src;
     scaleImage.alt = card.innerText;
@@ -99,22 +107,11 @@ function createElement(item) {
 };
 
 function renderElement(i) {
-  const elements = document.querySelector(".elements");
   const newAddingCard = createElement(i);
   elements.prepend(newAddingCard);
 };
 
 initialCards.forEach(renderElement);
-
-// Функция, отвечающая за сброс ошибки при открытии окон ввода данных
-function removeErrorOpenForm(form) {
-  form.querySelectorAll(validationVariables.fieldsetSelector).forEach(fieldset => {
-    const errorFieldsetType = document.querySelector(`.popup__error_type_${fieldset.name}`);
-    if (!fieldset.validity.valid) {
-      hideInputError(fieldset, validationVariables.fieldsetErrorClass,  validationVariables.spanErrorClass, errorFieldsetType);
-    };
-  });
-};
 
 // Сохранение информации при нажатии кнопки "сохранить" у окон редактирования профиля и добавления новых фотографий
 formEdition.addEventListener('submit', handleFormEditionSubmit);
@@ -150,19 +147,20 @@ buttonClosePhoto.addEventListener('click', function(){
 });
 
 // Закрытие по клику на overlay
-document.addEventListener('mousedown', function (evt) {
-  if (evt.target.classList.contains('popup')) {
-    const popupOpenedNow = document.querySelector(".popup_opened");
-    closePopUp(popupOpenedNow);
-  };
+const popups = document.querySelectorAll(".popup");
+popups.forEach((popup) => {
+  popup.addEventListener("mousedown", function (evt) {
+    if (evt.target.classList.contains("popup")) {
+      closePopUp(evt.target);
+    }
+  });
 });
 
 // Закрытие по кнопке Esc
-document.addEventListener('keyup', function(evt) {
+function closeByEsc(evt) {
   if (evt.key === 'Escape') {
     const popupOpenedNow = document.querySelector(".popup_opened");
     closePopUp(popupOpenedNow);
   }
-});
-
+};
 
