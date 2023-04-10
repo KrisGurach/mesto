@@ -1,27 +1,28 @@
 // Поиск всех необходимых DOM-элементов
+const popups = document.querySelectorAll(".popup");
 const popupEdition = document.querySelector(".popup_type_edition");
 
 const buttonEditProfile = document.querySelector(".profile__edit-button");
 const buttonCloseEdit = popupEdition.querySelector(".popup__close-button_type_edition");
 
 const formEdition = document.querySelector(".popup__form_type_edition");
-const formEditionInputs = formEdition.querySelectorAll(".popup__fieldset");
+const formEditionInputs = formEdition.querySelectorAll(".popup__input");
 const formEditionSaveButton = formEdition.querySelector(".popup__save-button");
-const nameInput = document.querySelector(".popup__fieldset_type_name");
-const professionInput = document.querySelector(".popup__fieldset_type_profession");
+const nameInput = document.querySelector(".popup__input_type_name");
+const professionInput = document.querySelector(".popup__input_type_profession");
 
 const nameUser = document.querySelector(".profile__info-name");
 const professionUser = document.querySelector(".profile__info-profession");
 
 const popupNewCard = document.querySelector(".popup_type_new-card");
-const inputPlace = document.querySelector(".popup__fieldset_type_place");
-const inputLink = document.querySelector(".popup__fieldset_type_link");
+const inputPlace = document.querySelector(".popup__input_type_place");
+const inputLink = document.querySelector(".popup__input_type_link");
 
 const buttonAddCard = document.querySelector(".profile__add-button");
 const buttonCloseNewCard = popupNewCard.querySelector(".popup__close-button_type_new-card");
 
 const formAddingElement = document.querySelector(".popup__form_type_new-card");
-const formAddingElementInputs = formAddingElement.querySelectorAll(".popup__fieldset");
+const formAddingElementInputs = formAddingElement.querySelectorAll(".popup__input");
 const formAddingElementSaveButton = formAddingElement.querySelector(".popup__save-button");
 
 const userGallery = document.querySelector("#gallery").content;
@@ -147,7 +148,6 @@ buttonClosePhoto.addEventListener('click', function(){
 });
 
 // Закрытие по клику на overlay
-const popups = document.querySelectorAll(".popup");
 popups.forEach((popup) => {
   popup.addEventListener("mousedown", function (evt) {
     if (evt.target.classList.contains("popup")) {

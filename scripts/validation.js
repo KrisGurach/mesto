@@ -1,32 +1,32 @@
 const validationVariables = {
   allFormsSelector: '.popup__form',
-  inputSelector: '.popup__fieldset',
-  fieldsetErrorClass: 'popup__fieldset_error',
+  inputSelector: '.popup__input',
+  inputErrorClass: 'popup__input_error',
   saveButtonSelector: '.popup__save-button',
   saveButtonDisabledClass: 'popup__save-button_disabled',
   spanErrorClass: 'popup__error_visible'
 };
 
 // Функции, отвечающие за проверку, показ и скрытие ошибки
-const showInputError = (input, fieldsetErrorClass, spanErrorClass, errorFieldsetType, errorMessage) => {
-  errorFieldsetType.textContent = errorMessage;
-  errorFieldsetType.classList.add(spanErrorClass);
-  input.classList.add(fieldsetErrorClass);
+const showInputError = (input, inputErrorClass, spanErrorClass, errorInputType, errorMessage) => {
+  errorInputType.textContent = errorMessage;
+  errorInputType.classList.add(spanErrorClass);
+  input.classList.add(inputErrorClass);
 };
 
-const hideInputError = (input, fieldsetErrorClass, spanErrorClass, errorFieldsetType) => {
-  errorFieldsetType.textContent = '';
-  errorFieldsetType.classList.remove(spanErrorClass);
-  input.classList.remove(fieldsetErrorClass);
+const hideInputError = (input, inputErrorClass, spanErrorClass, errorInputType) => {
+  errorInputType.textContent = '';
+  errorInputType.classList.remove(spanErrorClass);
+  input.classList.remove(inputErrorClass);
 };
 
-const checkInputValidity = (form, input, fieldsetErrorClass, spanErrorClass) => {
-  const errorFieldsetType = form.querySelector(`.popup__error_type_${input.name}`);
+const checkInputValidity = (form, input, inputErrorClass, spanErrorClass) => {
+  const errorInputType = form.querySelector(`.popup__error_type_${input.name}`);
   if (input.validity.valid) {
-    hideInputError(input, fieldsetErrorClass, spanErrorClass, errorFieldsetType);
+    hideInputError(input, inputErrorClass, spanErrorClass, errorInputType);
   }
   else {
-    showInputError(input, fieldsetErrorClass, spanErrorClass, errorFieldsetType, input.validationMessage);
+    showInputError(input, inputErrorClass, spanErrorClass, errorInputType, input.validationMessage);
   };
 };
 
@@ -51,7 +51,7 @@ const toggleButtonState = (inputList, button, saveButtonDisabledClass) => {
 const appendEventListeners = (form, inputList, button, another) => {
   inputList.forEach(input => {
     input.addEventListener('input', () => {
-      checkInputValidity(form, input, another.fieldsetErrorClass, another.spanErrorClass);
+      checkInputValidity(form, input, another.inputErrorClass, another.spanErrorClass);
       toggleButtonState(inputList, button, another.saveButtonDisabledClass)
     });
   });
@@ -69,10 +69,10 @@ function enableValidation({allFormsSelector, inputSelector, saveButtonSelector, 
 
 // Функция, отвечающая за сброс ошибки при открытии окон ввода данных
 function removeErrorOpenForm(form) {
-  form.querySelectorAll(validationVariables.inputSelector).forEach(fieldset => {
-    const errorFieldsetType = form.querySelector(`.popup__error_type_${fieldset.name}`);
-    if (!fieldset.validity.valid) {
-      hideInputError(fieldset, validationVariables.fieldsetErrorClass, validationVariables.spanErrorClass, errorFieldsetType);
+  form.querySelectorAll(validationVariables.inputSelector).forEach(input => {
+    const errorInputType = form.querySelector(`.popup__error_type_${input.name}`);
+    if (!input.validity.valid) {
+      hideInputError(input, validationVariables.inputErrorClass, validationVariables.spanErrorClass, errorInputType);
     };
   });
 };
