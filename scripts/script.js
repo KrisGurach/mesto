@@ -61,62 +61,61 @@ function handleFormEditionSubmit (evt) {
     closePopUp(popupEdition);
 };
 
-// Функция добавления новой карточки пользователем
-function addElement(evt){
+//Код для рефакторинга ОТСЮДА И НИЖЕ. Функция добавления новой карточки пользователем
+function addElement(evt) {
   evt.preventDefault();
   const newCard = {
       name: inputPlace.value,
       link: inputLink.value
   };
 
-  renderElement(newCard);
+
+  generateCard(newCard);
   closePopUp(popupNewCard);
 };
 
-// Функция создания элементов из массива и формирования новой карточки
-function createElement(item) {
-  const userElement = userGallery.querySelector(".element").cloneNode(true);
+// // Функция создания элементов из массива и формирования новой карточки
+// function createElement(item) {
+//   const userElement = userGallery.querySelector(".element").cloneNode(true);
 
-  const photo = userElement.querySelector(".element__photo");
-  photo.src = item.link;
-  photo.alt = item.name;
-  userElement.querySelector(".element__place").textContent = item.name;
+//   const photo = userElement.querySelector(".element__photo");
+//   photo.src = item.link;
+//   photo.alt = item.name;
+//   userElement.querySelector(".element__place").textContent = item.name;
 
-  // Добавление eventListener на кнопки
-  const buttonLikeCard = userElement.querySelector(".element__like");
-  const buttonRemoveCard = userElement.querySelector(".element__remove");
+//   // Добавление eventListener на кнопки
+//   const buttonLikeCard = userElement.querySelector(".element__like");
+//   const buttonRemoveCard = userElement.querySelector(".element__remove");
 
-  buttonLikeCard.addEventListener('click', function(){
-    buttonLikeCard.classList.toggle("element__like_active")
-  });
+//   buttonLikeCard.addEventListener('click', function(){
+//     buttonLikeCard.classList.toggle("element__like_active")
+//   });
 
-  buttonRemoveCard.addEventListener('click', function(){
-    const card = buttonRemoveCard.closest('.element');
-    card.remove();
-  });
+//   buttonRemoveCard.addEventListener('click', () => userElement.remove());
 
-  photo.addEventListener('click', function(){
-    const card = photo.closest(".element");
-    scaleImage.src = photo.src;
-    scaleImage.alt = card.innerText;
-    caption.textContent = card.innerText;
+//   photo.addEventListener('click', () => {
+//     scaleImage.src = item.link;
+//     scaleImage.alt = item.name;
+//     caption.textContent = item.name;
 
-    openPopUp(popupPhoto);
-  });
+//     openPopUp(popupPhoto);
+//   });
 
-  return userElement;
-};
+//   return userElement;
+// };
 
-function renderElement(i) {
-  const newAddingCard = createElement(i);
-  elements.prepend(newAddingCard);
-};
+// function renderElement(i) {
+//   const newAddingCard = createElement(i);
+//   elements.prepend(newAddingCard);
+// };
 
-initialCards.forEach(renderElement);
+// initialCards.forEach(renderElement);
+// // Код рефакторинга КОНЕЦ
+
 
 // Сохранение информации при нажатии кнопки "сохранить" у окон редактирования профиля и добавления новых фотографий
-formEdition.addEventListener('submit', handleFormEditionSubmit);
-formAddingElement.addEventListener('submit', addElement);
+   formEdition.addEventListener('submit', handleFormEditionSubmit);
+   formAddingElement.addEventListener('submit', addElement);
 
 // Открытие и закрытие окна редактирования профиля
 buttonEditProfile.addEventListener('click', function(){
