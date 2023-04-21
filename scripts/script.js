@@ -1,3 +1,7 @@
+// Импорт модулей
+import { Card } from './Card.js';
+import { initialCards } from './cards.js';
+
 // Поиск всех необходимых DOM-элементов
 const popups = document.querySelectorAll(".popup");
 const popupEdition = document.querySelector(".popup_type_edition");
@@ -25,11 +29,7 @@ const formAddingElement = document.querySelector(".popup__form_type_new-card");
 const formAddingElementInputs = formAddingElement.querySelectorAll(".popup__input");
 const formAddingElementSaveButton = formAddingElement.querySelector(".popup__save-button");
 
-const userGallery = document.querySelector("#gallery").content;
 const elements = document.querySelector(".elements");
-
-const caption = document.querySelector(".popup__figcaption");
-const scaleImage = document.querySelector(".popup__scale-image");
 
 const popupPhoto = document.querySelector(".popup_type_photo");
 const buttonClosePhoto = document.querySelector(".popup__close-button_type_photo");
@@ -61,61 +61,26 @@ function handleFormEditionSubmit (evt) {
     closePopUp(popupEdition);
 };
 
-//Код для рефакторинга ОТСЮДА И НИЖЕ. Функция добавления новой карточки пользователем
+//Функция сборки изначального массива фотокарточек
+initialCards.forEach((card) => {
+  const newCard = new Card(card.name, card.link);
+  newCard.generateCard();
+  elements.prepend(newCard._cardElement);
+});
+
+// Функция добавления новой карточки пользователем
 function addElement(evt) {
   evt.preventDefault();
-  const newCard = {
-      name: inputPlace.value,
-      link: inputLink.value
-  };
+  const newCard = new Card(inputPlace.value, inputLink.value);
 
-
-  generateCard(newCard);
+  newCard.generateCard();
+  elements.prepend(newCard._cardElement);
   closePopUp(popupNewCard);
 };
 
-// // Функция создания элементов из массива и формирования новой карточки
-// function createElement(item) {
-//   const userElement = userGallery.querySelector(".element").cloneNode(true);
-
-//   const photo = userElement.querySelector(".element__photo");
-//   photo.src = item.link;
-//   photo.alt = item.name;
-//   userElement.querySelector(".element__place").textContent = item.name;
-
-//   // Добавление eventListener на кнопки
-//   const buttonLikeCard = userElement.querySelector(".element__like");
-//   const buttonRemoveCard = userElement.querySelector(".element__remove");
-
-//   buttonLikeCard.addEventListener('click', function(){
-//     buttonLikeCard.classList.toggle("element__like_active")
-//   });
-
-//   buttonRemoveCard.addEventListener('click', () => userElement.remove());
-
-//   photo.addEventListener('click', () => {
-//     scaleImage.src = item.link;
-//     scaleImage.alt = item.name;
-//     caption.textContent = item.name;
-
-//     openPopUp(popupPhoto);
-//   });
-
-//   return userElement;
-// };
-
-// function renderElement(i) {
-//   const newAddingCard = createElement(i);
-//   elements.prepend(newAddingCard);
-// };
-
-// initialCards.forEach(renderElement);
-// // Код рефакторинга КОНЕЦ
-
-
 // Сохранение информации при нажатии кнопки "сохранить" у окон редактирования профиля и добавления новых фотографий
-   formEdition.addEventListener('submit', handleFormEditionSubmit);
-   formAddingElement.addEventListener('submit', addElement);
+formEdition.addEventListener('submit', handleFormEditionSubmit);
+formAddingElement.addEventListener('submit', addElement);
 
 // Открытие и закрытие окна редактирования профиля
 buttonEditProfile.addEventListener('click', function(){
@@ -162,4 +127,6 @@ function closeByEsc(evt) {
     closePopUp(popupOpenedNow);
   }
 };
+
+export { openPopUp };
 

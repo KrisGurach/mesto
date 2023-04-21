@@ -1,3 +1,9 @@
+import { openPopUp } from './script.js';
+
+const caption = document.querySelector(".popup__figcaption");
+const scaleImage = document.querySelector(".popup__scale-image");
+const popupPhoto = document.querySelector(".popup_type_photo");
+
 class Card {
   constructor(name, link) {
     this._name = name;
@@ -40,8 +46,6 @@ class Card {
   };
 };
 
-export {Card}
+export { Card }
 
-// 1. Удалить ненужные селекты в индексе
-// 2. Избавиться от файла тест
-// 3. Разобраться как перенести addElement
+// 1. Добавить selectorTEmplate в конструктор чтоб как в тз
