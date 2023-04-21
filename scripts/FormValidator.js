@@ -17,7 +17,7 @@ class FormValidator {
   };
 
   _checkInputValidity(form, input) {
-    const errorInputType = form.querySelector(`.popup__error_type_${input.name}`);
+    const errorInputType = form.querySelector(`${this._validationVariables.popupErrorTypeSelector}${input.name}`);
     if (input.validity.valid) {
       this._hideInputError(input, errorInputType);
     }
@@ -59,16 +59,14 @@ class FormValidator {
   };
 
   removeErrorOpenForm(form) {
-    const inputList = form.querySelectorAll('.popup__input');
-    const button = form.querySelector('.popup__save-button');
+    const inputList = form.querySelectorAll(this._validationVariables.inputSelector);
+    const button = form.querySelector(this._validationVariables.saveButtonSelector);
 
     form.querySelectorAll(this._validationVariables.inputSelector).forEach(input => {
-      const errorInputType = form.querySelector(`.popup__error_type_${input.name}`);
-      if (!input.validity.valid) {
-        this._hideInputError(input, errorInputType);
-      };
-    });
+      const errorInputType = form.querySelector(`${this._validationVariables.popupErrorTypeSelector}${input.name}`);
+      this._hideInputError(input, errorInputType);
       this._toggleButtonState(inputList, button);
+    });
   };
 }
 

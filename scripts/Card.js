@@ -51,5 +51,4 @@ export { Card }
 // 1. Добавить selectorTEmplate в конструктор чтоб как в тз
 // 2. Переименовать файл cards.js
 // 3. Добавить функции handle для listeners
-// 4. Проверить нужнен ли if в функции removeError
-// 5. PopupEdition заменить на formEdition buttonEditProfile.addEventListener('click', function()
+

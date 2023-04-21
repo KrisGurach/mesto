@@ -11,8 +11,6 @@ const buttonEditProfile = document.querySelector(".profile__edit-button");
 const buttonCloseEdit = popupEdition.querySelector(".popup__close-button_type_edition");
 
 const formEdition = document.querySelector(".popup__form_type_edition");
-const formEditionInputs = formEdition.querySelectorAll(".popup__input");
-const formEditionSaveButton = formEdition.querySelector(".popup__save-button");
 const nameInput = document.querySelector(".popup__input_type_name");
 const professionInput = document.querySelector(".popup__input_type_profession");
 
@@ -27,8 +25,6 @@ const buttonAddCard = document.querySelector(".profile__add-button");
 const buttonCloseNewCard = popupNewCard.querySelector(".popup__close-button_type_new-card");
 
 const formAddingElement = document.querySelector(".popup__form_type_new-card");
-const formAddingElementInputs = formAddingElement.querySelectorAll(".popup__input");
-const formAddingElementSaveButton = formAddingElement.querySelector(".popup__save-button");
 
 const elements = document.querySelector(".elements");
 
@@ -41,7 +37,8 @@ const validationVariables = {
   inputErrorClass: 'popup__input_error',
   saveButtonSelector: '.popup__save-button',
   saveButtonDisabledClass: 'popup__save-button_disabled',
-  spanErrorClass: 'popup__error_visible'
+  spanErrorClass: 'popup__error_visible',
+  popupErrorTypeSelector: '.popup__error_type_'
 };
 
 // Общие функции открытия и закрытия
@@ -103,7 +100,7 @@ formAddingElement.addEventListener('submit', addElement);
 
 // Открытие и закрытие окна редактирования профиля
 buttonEditProfile.addEventListener('click', function(){
-  formEditionValidator.removeErrorOpenForm(popupEdition);
+  formEditionValidator.removeErrorOpenForm(formEdition);
   setPopUpEdit();
   openPopUp(popupEdition);
 });
@@ -115,7 +112,7 @@ buttonCloseEdit.addEventListener('click', function(){
 // Открытие и закрытие окна добавления новых фотографий
 buttonAddCard.addEventListener('click', function(){
   formAddingElement.reset();
-  formNewCardValidator.removeErrorOpenForm(popupNewCard);
+  formNewCardValidator.removeErrorOpenForm(formAddingElement);
   openPopUp(popupNewCard);
 });
 
