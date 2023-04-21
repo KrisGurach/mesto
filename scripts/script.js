@@ -1,6 +1,7 @@
 // Импорт модулей
 import { Card } from './Card.js';
 import { initialCards } from './cards.js';
+import { FormValidator } from './FormValidator.js';
 
 // Поиск всех необходимых DOM-элементов
 const popups = document.querySelectorAll(".popup");
@@ -34,6 +35,15 @@ const elements = document.querySelector(".elements");
 const popupPhoto = document.querySelector(".popup_type_photo");
 const buttonClosePhoto = document.querySelector(".popup__close-button_type_photo");
 
+// Объект настроек с селекторами
+const validationVariables = {
+  inputSelector: '.popup__input',
+  inputErrorClass: 'popup__input_error',
+  saveButtonSelector: '.popup__save-button',
+  saveButtonDisabledClass: 'popup__save-button_disabled',
+  spanErrorClass: 'popup__error_visible'
+};
+
 // Общие функции открытия и закрытия
 function openPopUp(popup){
   document.addEventListener('keydown', closeByEsc);
@@ -61,13 +71,6 @@ function handleFormEditionSubmit (evt) {
     closePopUp(popupEdition);
 };
 
-//Функция сборки изначального массива фотокарточек
-initialCards.forEach((card) => {
-  const newCard = new Card(card.name, card.link);
-  newCard.generateCard();
-  elements.prepend(newCard._cardElement);
-});
-
 // Функция добавления новой карточки пользователем
 function addElement(evt) {
   evt.preventDefault();
@@ -78,15 +81,30 @@ function addElement(evt) {
   closePopUp(popupNewCard);
 };
 
+// Вызов функции сборки изначального массива фотокарточек
+initialCards.forEach((card) => {
+  const newCard = new Card(card.name, card.link);
+  newCard.generateCard();
+  elements.prepend(newCard._cardElement);
+});
+
+// Вызов функции запуска валидации формы
+const formEditionValidator = new FormValidator(validationVariables, '.popup__form_type_edition');
+const formNewCardValidator = new FormValidator(validationVariables, '.popup__form_type_new-card');
+
+Array.of(formEditionValidator, formNewCardValidator).forEach(a => {
+  a.enableValidation();
+});
+
+
 // Сохранение информации при нажатии кнопки "сохранить" у окон редактирования профиля и добавления новых фотографий
 formEdition.addEventListener('submit', handleFormEditionSubmit);
 formAddingElement.addEventListener('submit', addElement);
 
 // Открытие и закрытие окна редактирования профиля
 buttonEditProfile.addEventListener('click', function(){
-  removeErrorOpenForm(popupEdition);
+  formEditionValidator.removeErrorOpenForm(popupEdition);
   setPopUpEdit();
-  toggleButtonState(formEditionInputs, formEditionSaveButton, validationVariables.saveButtonDisabledClass);
   openPopUp(popupEdition);
 });
 
@@ -97,8 +115,7 @@ buttonCloseEdit.addEventListener('click', function(){
 // Открытие и закрытие окна добавления новых фотографий
 buttonAddCard.addEventListener('click', function(){
   formAddingElement.reset();
-  removeErrorOpenForm(popupNewCard);
-  toggleButtonState(formAddingElementInputs, formAddingElementSaveButton, validationVariables.saveButtonDisabledClass);
+  formNewCardValidator.removeErrorOpenForm(popupNewCard);
   openPopUp(popupNewCard);
 });
 
