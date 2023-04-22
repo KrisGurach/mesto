@@ -1,6 +1,6 @@
 // Импорт модулей
 import { Card } from './Card.js';
-import { initialCards } from './cards.js';
+import { initialCards } from './initialCards.js';
 import { FormValidator } from './FormValidator.js';
 
 // Поиск всех необходимых DOM-элементов
@@ -80,7 +80,7 @@ function addElement(evt) {
 
 // Вызов функции сборки изначального массива фотокарточек
 initialCards.forEach((card) => {
-  const newCard = new Card(card.name, card.link);
+  const newCard = new Card(card, '#gallery');
   newCard.generateCard();
   elements.prepend(newCard._cardElement);
 });

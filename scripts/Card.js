@@ -1,18 +1,19 @@
-import { openPopUp } from './script.js';
+import { openPopUp } from './index.js';
 
 const caption = document.querySelector(".popup__figcaption");
 const scaleImage = document.querySelector(".popup__scale-image");
 const popupPhoto = document.querySelector(".popup_type_photo");
 
 class Card {
-  constructor(name, link) {
-    this._name = name;
-    this._link = link;
+  constructor(data, templateSelector) {
+    this._name = data.name;
+    this._link = data.link;
+    this._templateSelector = templateSelector;
   };
 
   _getTemplate() {
     const cardElement = document
-      .querySelector('#gallery')
+      .querySelector(this._templateSelector)
       .content
       .querySelector('.element')
       .cloneNode(true);
@@ -48,7 +49,5 @@ class Card {
 
 export { Card }
 
-// 1. Добавить selectorTEmplate в конструктор чтоб как в тз
-// 2. Переименовать файл cards.js
-// 3. Добавить функции handle для listeners
+
 
