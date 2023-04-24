@@ -8,7 +8,6 @@ const popups = document.querySelectorAll(".popup");
 const popupEdition = document.querySelector(".popup_type_edition");
 
 const buttonEditProfile = document.querySelector(".profile__edit-button");
-const buttonCloseEdit = popupEdition.querySelector(".popup__close-button_type_edition");
 
 const formEdition = document.querySelector(".popup__form_type_edition");
 const nameInput = document.querySelector(".popup__input_type_name");
@@ -22,14 +21,14 @@ const inputPlace = document.querySelector(".popup__input_type_place");
 const inputLink = document.querySelector(".popup__input_type_link");
 
 const buttonAddCard = document.querySelector(".profile__add-button");
-const buttonCloseNewCard = popupNewCard.querySelector(".popup__close-button_type_new-card");
 
 const formAddingElement = document.querySelector(".popup__form_type_new-card");
 
-const elements = document.querySelector(".elements");
+const cardsContainer = document.querySelector(".elements");
 
 const popupPhoto = document.querySelector(".popup_type_photo");
-const buttonClosePhoto = document.querySelector(".popup__close-button_type_photo");
+const caption = document.querySelector(".popup__figcaption");
+const scaleImage = document.querySelector(".popup__scale-image");
 
 // Объект настроек с селекторами
 const validationVariables = {
@@ -68,21 +67,28 @@ function handleFormEditionSubmit (evt) {
     closePopUp(popupEdition);
 };
 
-// Функция добавления новой карточки пользователем
-function addElement(evt) {
-  evt.preventDefault();
-  const newCard = new Card(inputPlace.value, inputLink.value);
+// Функция добавления карточки в разметку
+function renderCard(element) {
+  cardsContainer.prepend(element);
+};
 
-  newCard.generateCard();
-  elements.prepend(newCard._cardElement);
+// Функция добавления новой карточки пользователем
+function handleNewElement(evt) {
+  evt.preventDefault();
+  const data = {
+    name: inputPlace.value,
+    link: inputLink.value
+  };
+  const newCard = new Card(data, '.gallery');
+
+  renderCard(newCard.generateCard());
   closePopUp(popupNewCard);
 };
 
 // Вызов функции сборки изначального массива фотокарточек
 initialCards.forEach((card) => {
-  const newCard = new Card(card, '#gallery');
-  newCard.generateCard();
-  elements.prepend(newCard._cardElement);
+  const newCard = new Card(card, '.gallery');
+  renderCard(newCard.generateCard());
 });
 
 // Вызов функции запуска валидации формы
@@ -96,40 +102,27 @@ Array.of(formEditionValidator, formNewCardValidator).forEach(a => {
 
 // Сохранение информации при нажатии кнопки "сохранить" у окон редактирования профиля и добавления новых фотографий
 formEdition.addEventListener('submit', handleFormEditionSubmit);
-formAddingElement.addEventListener('submit', addElement);
+formAddingElement.addEventListener('submit', handleNewElement);
 
 // Открытие и закрытие окна редактирования профиля
 buttonEditProfile.addEventListener('click', function(){
-  formEditionValidator.removeErrorOpenForm(formEdition);
+  formEditionValidator.removeErrorOpenForm();
   setPopUpEdit();
   openPopUp(popupEdition);
-});
-
-buttonCloseEdit.addEventListener('click', function(){
-  closePopUp(popupEdition);
 });
 
 // Открытие и закрытие окна добавления новых фотографий
 buttonAddCard.addEventListener('click', function(){
   formAddingElement.reset();
-  formNewCardValidator.removeErrorOpenForm(formAddingElement);
+  formNewCardValidator.removeErrorOpenForm();
   openPopUp(popupNewCard);
-});
-
-buttonCloseNewCard.addEventListener('click', function() {
-  closePopUp(popupNewCard);
-});
-
-// Закрытие окна увеличенной фотографии
-buttonClosePhoto.addEventListener('click', function(){
-  closePopUp(popupPhoto);
 });
 
 // Закрытие по клику на overlay
 popups.forEach((popup) => {
   popup.addEventListener("mousedown", function (evt) {
-    if (evt.target.classList.contains("popup")) {
-      closePopUp(evt.target);
+    if (evt.target.classList.contains("popup") || evt.target.classList.contains("popup__close-button")) {
+      closePopUp(popup);
     }
   });
 });
@@ -143,4 +136,5 @@ function closeByEsc(evt) {
 };
 
 export { openPopUp };
+export { popupPhoto, caption, scaleImage }
 
