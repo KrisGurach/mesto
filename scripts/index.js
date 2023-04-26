@@ -67,9 +67,14 @@ function handleFormEditionSubmit (evt) {
     closePopUp(popupEdition);
 };
 
+function getGeneratedCardElement(data) {
+  const newCard = new Card(data, '.gallery');
+  return newCard.generateCard();
+};
+
 // Функция добавления карточки в разметку
-function renderCard(element) {
-  cardsContainer.prepend(element);
+function renderCard(generatedCardElement) {
+  cardsContainer.prepend(generatedCardElement);
 };
 
 // Функция добавления новой карточки пользователем
@@ -79,17 +84,13 @@ function handleNewElement(evt) {
     name: inputPlace.value,
     link: inputLink.value
   };
-  const newCard = new Card(data, '.gallery');
 
-  renderCard(newCard.generateCard());
+  renderCard(getGeneratedCardElement(data));
   closePopUp(popupNewCard);
 };
 
 // Вызов функции сборки изначального массива фотокарточек
-initialCards.forEach((card) => {
-  const newCard = new Card(card, '.gallery');
-  renderCard(newCard.generateCard());
-});
+initialCards.forEach((data) => renderCard(getGeneratedCardElement(data)));
 
 // Вызов функции запуска валидации формы
 const formEditionValidator = new FormValidator(validationVariables, '.popup__form_type_edition');

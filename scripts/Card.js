@@ -8,6 +8,7 @@ class Card {
     this._templateSelector = templateSelector;
     this._cardElement = this._getTemplate();
     this._cardImage = this._cardElement.querySelector('.element__photo');
+    this._buttonLike = this._cardElement.querySelector('.element__like');
   };
 
   _getTemplate() {
@@ -31,7 +32,7 @@ class Card {
   };
 
   _handleLike = () => {
-    this._cardElement.querySelector('.element__like').classList.toggle("element__like_active");
+    this._buttonLike.classList.toggle("element__like_active");
   };
 
   _handleRemove = () => {
@@ -48,7 +49,7 @@ class Card {
   };
 
   _setEventListeners() {
-    this._cardElement.querySelector('.element__like').addEventListener('click', this._handleLike);
+    this._buttonLike.addEventListener('click', this._handleLike);
 
     this._cardElement.querySelector('.element__remove').addEventListener('click', this._handleRemove);
 
