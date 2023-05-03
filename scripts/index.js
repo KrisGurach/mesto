@@ -39,7 +39,6 @@ const validationVariables = {
   spanErrorClass: 'popup__error_visible',
   popupErrorTypeSelector: '.popup__error_type_'
 };
-
 // Общие функции открытия и закрытия
 function openPopUp(popup){
   document.addEventListener('keydown', closeByEsc);
@@ -49,6 +48,23 @@ function openPopUp(popup){
 function closePopUp(popup){
   document.removeEventListener('keydown', closeByEsc);
   popup.classList.remove("popup_opened");
+};
+
+// Закрытие по клику на overlay
+popups.forEach((popup) => {
+  popup.addEventListener("mousedown", function (evt) {
+    if (evt.target.classList.contains("popup") || evt.target.classList.contains("popup__close-button")) {
+      closePopUp(popup);
+    }
+  });
+});
+
+// Закрытие по кнопке Esc
+function closeByEsc(evt) {
+  if (evt.key === 'Escape') {
+    const popupOpenedNow = document.querySelector(".popup_opened");
+    closePopUp(popupOpenedNow);
+  }
 };
 
 // Функция, отвечающая за отображение текста профиля в полях попапа
@@ -119,22 +135,6 @@ buttonAddCard.addEventListener('click', function(){
   openPopUp(popupNewCard);
 });
 
-// Закрытие по клику на overlay
-popups.forEach((popup) => {
-  popup.addEventListener("mousedown", function (evt) {
-    if (evt.target.classList.contains("popup") || evt.target.classList.contains("popup__close-button")) {
-      closePopUp(popup);
-    }
-  });
-});
-
-// Закрытие по кнопке Esc
-function closeByEsc(evt) {
-  if (evt.key === 'Escape') {
-    const popupOpenedNow = document.querySelector(".popup_opened");
-    closePopUp(popupOpenedNow);
-  }
-};
 
 export { openPopUp };
 export { popupPhoto, caption, scaleImage }

@@ -1,0 +1,19 @@
+{
+  "name": "mesto",
+  "version": "0.0.1",
+  "description": "Использованные методы: Grid-layout, Flexbox, отрицательное абсолютное позиционирование, была проведена работа по стилизации формы (input type=text) и кнопок, ппродемонстрированы начальные азы JavaScript(методы querySelector, addEventListener)",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/KrisGurach/mesto.git"
+  },
+  "author": "Kristina Gurachenkova",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/KrisGurach/mesto/issues"
+  },
+  "homepage": "https://github.com/KrisGurach/mesto#readme"
+}
