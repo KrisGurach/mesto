@@ -1,5 +1,5 @@
-import { openPopUp } from './index.js';
-import { popupPhoto, caption, scaleImage } from './index.js';
+import { openPopUp } from '../../index.js';
+import { popupPhoto, caption, scaleImage } from '../../index.js';
 
 class Card {
   constructor(data, templateSelector) {

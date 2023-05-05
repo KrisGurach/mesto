@@ -1,4 +1,4 @@
-import { popupOpened, popup, popupCloseButton } from './constants.js';
+import { popupOpened, popup, popupCloseButton } from '../utils/constants.js';
 
 export default class Popup {
   constructor(popupSelector) {
@@ -15,7 +15,7 @@ export default class Popup {
     this._popupType.classList.remove(popupOpened);
   }
 
-  _handleEscClose() {
+  _handleEscClose(evt) {
     if (evt.key === 'Escape') {
       this._popupType.close();
     }

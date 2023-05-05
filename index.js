@@ -1,11 +1,12 @@
 // Импорт модулей
-import { Card } from './Card.js';
-import { initialCards } from './initialCards.js';
-import { FormValidator } from './FormValidator.js';
+import { Card } from './scripts/components/Card.js';
+import { initialCards } from './scripts/utils/initialCards.js';
+import { FormValidator } from './scripts/components/FormValidator.js';
+import PopupWithForm from './scripts/components/PopupWithForm.js';
 
 // Поиск всех необходимых DOM-элементов
 const popups = document.querySelectorAll(".popup");
-const popupEdition = document.querySelector(".popup_type_edition");
+const popupEditionSelector = '.popup_type_edition';
 
 const buttonEditProfile = document.querySelector(".profile__edit-button");
 
@@ -45,27 +46,27 @@ function openPopUp(popup){
   popup.classList.add("popup_opened");
 };
 
-function closePopUp(popup){
-  document.removeEventListener('keydown', closeByEsc);
-  popup.classList.remove("popup_opened");
-};
+// function closePopUp(popup){
+//   document.removeEventListener('keydown', closeByEsc);
+//   popup.classList.remove("popup_opened");
+// };
 
-// Закрытие по клику на overlay
-popups.forEach((popup) => {
-  popup.addEventListener("mousedown", function (evt) {
-    if (evt.target.classList.contains("popup") || evt.target.classList.contains("popup__close-button")) {
-      closePopUp(popup);
-    }
-  });
-});
+// // Закрытие по клику на overlay
+// popups.forEach((popup) => {
+//   popup.addEventListener("mousedown", function (evt) {
+//     if (evt.target.classList.contains("popup") || evt.target.classList.contains("popup__close-button")) {
+//       closePopUp(popup);
+//     }
+//   });
+// });
 
-// Закрытие по кнопке Esc
-function closeByEsc(evt) {
-  if (evt.key === 'Escape') {
-    const popupOpenedNow = document.querySelector(".popup_opened");
-    closePopUp(popupOpenedNow);
-  }
-};
+// // Закрытие по кнопке Esc
+// function closeByEsc(evt) {
+//   if (evt.key === 'Escape') {
+//     const popupOpenedNow = document.querySelector(".popup_opened");
+//     closePopUp(popupOpenedNow);
+//   }
+// };
 
 // Функция, отвечающая за отображение текста профиля в полях попапа
 function setPopUpEdit(){
@@ -74,7 +75,7 @@ function setPopUpEdit(){
 };
 
 // Функция, отвечющая за редактирование информации
-function handleFormEditionSubmit (evt) {
+function handleFormEditionSubmit(evt) {
     evt.preventDefault();
 
     nameUser.textContent = nameInput.value;
@@ -117,15 +118,17 @@ Array.of(formEditionValidator, formNewCardValidator).forEach(a => {
 });
 
 
-// Сохранение информации при нажатии кнопки "сохранить" у окон редактирования профиля и добавления новых фотографий
-formEdition.addEventListener('submit', handleFormEditionSubmit);
-formAddingElement.addEventListener('submit', handleNewElement);
+const popupEdition = new PopupWithForm(popupEditionSelector, handleFormEditionSubmit)
+
+// // Сохранение информации при нажатии кнопки "сохранить" у окон редактирования профиля и добавления новых фотографий
+// formEdition.addEventListener('submit', handleFormEditionSubmit);
+// formAddingElement.addEventListener('submit', handleNewElement);
 
 // Открытие и закрытие окна редактирования профиля
 buttonEditProfile.addEventListener('click', function(){
   formEditionValidator.removeErrorOpenForm();
   setPopUpEdit();
-  openPopUp(popupEdition);
+  popupEdition.open();
 });
 
 // Открытие и закрытие окна добавления новых фотографий
