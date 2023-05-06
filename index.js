@@ -4,17 +4,13 @@ import FormValidator from './scripts/components/FormValidator.js';
 import PopupWithForm from './scripts/components/PopupWithForm.js';
 import PopupWithImage from  './scripts/components/PopupWithImage.js';
 import { initialCards } from './scripts/utils/initialCards.js';
-import { popupEditionSelector, popupNewCardSelector,popupPhotoSelector } from './scripts/utils/constants.js';
+import { popupEditionSelector, popupNewCardSelector, popupPhotoSelector,
+  nameUser, professionUser, nameInput, professionInput } from './scripts/utils/constants.js';
+import UserInfo from './scripts/components/UserInfo.js';
 
 // Поиск всех необходимых DOM-элементов
 const buttonEditProfile = document.querySelector(".profile__edit-button");
 const buttonAddCard = document.querySelector(".profile__add-button");
-
-const nameInput = document.querySelector(".popup__input_type_name");
-const professionInput = document.querySelector(".popup__input_type_profession");
-
-const nameUser = document.querySelector(".profile__info-name");
-const professionUser = document.querySelector(".profile__info-profession");
 
 const inputPlace = document.querySelector(".popup__input_type_place");
 const inputLink = document.querySelector(".popup__input_type_link");
@@ -31,12 +27,6 @@ const validationVariables = {
   saveButtonDisabledClass: 'popup__save-button_disabled',
   spanErrorClass: 'popup__error_visible',
   popupErrorTypeSelector: '.popup__error_type_'
-};
-
-// Функция, отвечающая за отображение текста профиля в полях попапа
-function setPopUpEdit(){
-  nameInput.value = nameUser.textContent;
-  professionInput.value = professionUser.textContent;
 };
 
 // Функция, отвечющая за редактирование информации
@@ -92,12 +82,12 @@ const popupNewCard = new PopupWithForm(popupNewCardSelector, handleNewElement);
 
 Array.of(popupEdition, popupNewCard).forEach(a => a.setEventListeners());
 
-
+const userInfo = new UserInfo({ name: nameUser, profession: professionUser });
 
 // Открытие и закрытие окна редактирования профиля
 buttonEditProfile.addEventListener('click', function(){
   formEditionValidator.removeErrorOpenForm();
-  setPopUpEdit();
+  userInfo.setUserInfo();
   popupEdition.open();
 });
 

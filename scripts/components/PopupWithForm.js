@@ -6,7 +6,7 @@ export default class PopupWithForm extends Popup {
     super(popupSelector);
     this._form = this._popupType.querySelector(formSelector);
     this._inputList =  this._popupType.querySelectorAll(inputSelector);
-    this._callback = callback; 
+    this._callback = callback;
   }
 
   _getInputValues() {
@@ -24,8 +24,9 @@ export default class PopupWithForm extends Popup {
   }
 
   close() {
-    this._form.reset();
     super.close();
+    //setTimeout.bind(window, this._form.reset, 1000);
+    this._form.reset();
   }
 }
 
