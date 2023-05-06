@@ -6,7 +6,7 @@ export default class PopupWithForm extends Popup {
     super(popupSelector);
     this._form = this._popupType.querySelector(formSelector);
     this._inputList =  this._popupType.querySelectorAll(inputSelector);
-    this._callback = callback; //саму фуекцию нужно прописать в index.js или в другом файле, где будет создаваться новый блять экземпляр ебучкласса
+    this._callback = callback; 
   }
 
   _getInputValues() {
@@ -20,7 +20,7 @@ export default class PopupWithForm extends Popup {
   setEventListeners() {
     super.setEventListeners();
 
-    this_form.addEventListener("submit", this._callback); //function handleFormEditionSubmit and function handleNewElement
+    this._form.addEventListener("submit", this._callback);
   }
 
   close() {

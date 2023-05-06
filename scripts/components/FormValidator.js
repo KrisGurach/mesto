@@ -1,4 +1,4 @@
-class FormValidator {
+export default class FormValidator {
   constructor(validationVariables, currentForm) {
     this._validationVariables = validationVariables;
     this._form = document.querySelector(currentForm);
@@ -67,6 +67,5 @@ class FormValidator {
 }
 
 
-export { FormValidator }
 
 
