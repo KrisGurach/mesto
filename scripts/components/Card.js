@@ -1,6 +1,6 @@
 export default class Card {
   constructor(data, templateSelector, handleCardClick) {
-    this._name = data.name;
+    this._place = data.place;
     this._link = data.link;
     this._templateSelector = templateSelector;
     this._cardElement = this._getTemplate();
@@ -22,8 +22,8 @@ export default class Card {
   generateCard() {
     this._setEventListeners();
 
-    this._cardElement.querySelector('.element__place').textContent = this._name;
-    this._cardImage.alt = this._name;
+    this._cardElement.querySelector('.element__place').textContent = this._place;
+    this._cardImage.alt = this._place;
     this._cardImage.src = this._link;
 
     return this._cardElement;
@@ -39,7 +39,7 @@ export default class Card {
   };
 
   _clickHandlerWrapper = () => {
-    this._handleCardClick({name: this._name, link: this._link});
+    this._handleCardClick({name: this._place, link: this._link});
   }
 
   _setEventListeners() {

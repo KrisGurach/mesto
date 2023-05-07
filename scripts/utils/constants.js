@@ -12,10 +12,11 @@ const nameUser = document.querySelector('.profile__info-name');
 const professionUser = document.querySelector('.profile__info-profession');
 const nameInput = document.querySelector('.popup__input_type_name');
 const professionInput = document.querySelector('.popup__input_type_profession');
+const cardsContainerSelector = '.elements';
 
 export { popupOpened, popup, popupCloseButton, caption, scaleImage, formSelector, inputSelector,
   popupEditionSelector, popupNewCardSelector, popupPhotoSelector, nameUser, professionUser,
-  nameInput, professionInput }
+  nameInput, professionInput, cardsContainerSelector }
 
 
 

@@ -9,7 +9,7 @@ export default class PopupWithForm extends Popup {
     this._callback = callback;
   }
 
-  _getInputValues() {
+  getInputValues() {
     const obj = {};
     this._inputList.forEach(input => {
       obj[input.name] = input.value;

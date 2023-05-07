@@ -5,19 +5,13 @@ import PopupWithForm from './scripts/components/PopupWithForm.js';
 import PopupWithImage from  './scripts/components/PopupWithImage.js';
 import { initialCards } from './scripts/utils/initialCards.js';
 import { popupEditionSelector, popupNewCardSelector, popupPhotoSelector,
-  nameUser, professionUser, nameInput, professionInput } from './scripts/utils/constants.js';
+  nameUser, professionUser, nameInput, professionInput, cardsContainerSelector } from './scripts/utils/constants.js';
 import UserInfo from './scripts/components/UserInfo.js';
+import Section from './scripts/components/Section.js';
 
 // Поиск всех необходимых DOM-элементов
 const buttonEditProfile = document.querySelector(".profile__edit-button");
 const buttonAddCard = document.querySelector(".profile__add-button");
-
-const inputPlace = document.querySelector(".popup__input_type_place");
-const inputLink = document.querySelector(".popup__input_type_link");
-
-const formAddingElement = document.querySelector(".popup__form_type_new-card");
-
-const cardsContainer = document.querySelector(".elements");
 
 // Объект настроек с селекторами
 const validationVariables = {
@@ -29,46 +23,46 @@ const validationVariables = {
   popupErrorTypeSelector: '.popup__error_type_'
 };
 
+
+// Вызов функции запуска сабмита формы
+const popupEdition = new PopupWithForm(popupEditionSelector, handleFormEditionSubmit);
+const popupNewCard = new PopupWithForm(popupNewCardSelector, handleNewElement);
+
 // Функция, отвечющая за редактирование информации
 function handleFormEditionSubmit(evt) {
     evt.preventDefault();
 
-    nameUser.textContent = nameInput.value;
-    professionUser.textContent = professionInput.value;
+    const inputValues = popupEdition.getInputValues();
+
+    nameUser.textContent = inputValues.name;
+    professionUser.textContent = inputValues.profession;
 
     popupEdition.close();
 };
 
+// Запуск функции создания рабочего попапа с увеличенным изображением
 const handleCardClick = (data) => {
   const popupPhoto = new PopupWithImage(data, popupPhotoSelector);
   popupPhoto.setEventListeners();
   popupPhoto.open();
 }
 
-function getGeneratedCardElement(data) {
-  const newCard = new Card(data, '.gallery', handleCardClick);
-  return newCard.generateCard();
-};
-
-// Функция добавления карточки в разметку
-function renderCard(generatedCardElement) {
-  cardsContainer.prepend(generatedCardElement);
-};
-
 // Функция добавления новой карточки пользователем
 function handleNewElement(evt) {
   evt.preventDefault();
-  const data = {
-    name: inputPlace.value,
-    link: inputLink.value
-  };
+  const inputValues = popupNewCard.getInputValues();
+  const data = [inputValues];
 
-  renderCard(getGeneratedCardElement(data));
+  const newCardSection = new Section({ items: data, renderer: (item) => {
+    const newCard = new Card(item, '.gallery', handleCardClick);
+    const cardElement = newCard.generateCard();
+    newCardSection.addItem(cardElement);
+}}, cardsContainerSelector)
+
+  newCardSection.renderAll();
+
   popupNewCard.close();
 };
-
-// Вызов функции сборки изначального массива фотокарточек
-initialCards.forEach((data) => renderCard(getGeneratedCardElement(data)));
 
 // Вызов функции запуска валидации формы
 const formEditionValidator = new FormValidator(validationVariables, '.popup__form_type_edition');
@@ -77,12 +71,20 @@ const formNewCardValidator = new FormValidator(validationVariables, '.popup__for
 Array.of(formEditionValidator, formNewCardValidator).forEach(a => a.enableValidation());
 
 
-const popupEdition = new PopupWithForm(popupEditionSelector, handleFormEditionSubmit);
-const popupNewCard = new PopupWithForm(popupNewCardSelector, handleNewElement);
-
 Array.of(popupEdition, popupNewCard).forEach(a => a.setEventListeners());
 
+// Запуск отображения данных пользователя со страницы в попап и сохранение при редактировании
 const userInfo = new UserInfo({ name: nameUser, profession: professionUser });
+
+// Отрисовка карточек
+const baseCardSection = new Section({ items: initialCards, renderer: (item) => {
+    const newCard = new Card(item, '.gallery', handleCardClick);
+    const cardElement = newCard.generateCard();
+    baseCardSection.addItem(cardElement);
+  }
+}, cardsContainerSelector);
+
+baseCardSection.renderAll();
 
 // Открытие и закрытие окна редактирования профиля
 buttonEditProfile.addEventListener('click', function(){
@@ -93,7 +95,6 @@ buttonEditProfile.addEventListener('click', function(){
 
 // Открытие и закрытие окна добавления новых фотографий
 buttonAddCard.addEventListener('click', function(){
-  formAddingElement.reset();
   formNewCardValidator.removeErrorOpenForm();
   popupNewCard.open();
 });
