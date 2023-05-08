@@ -25,7 +25,6 @@ export default class PopupWithForm extends Popup {
 
   close() {
     super.close();
-    //setTimeout.bind(window, this._form.reset, 1000);
     this._form.reset();
   }
 }

@@ -1,11 +1,13 @@
+import { elementSelector, photoSelector, placeSelector, likeSelector, likeActive, removeSelector } from '../utils/constants.js';
+
 export default class Card {
   constructor(data, templateSelector, handleCardClick) {
     this._place = data.place;
     this._link = data.link;
     this._templateSelector = templateSelector;
     this._cardElement = this._getTemplate();
-    this._cardImage = this._cardElement.querySelector('.element__photo');
-    this._buttonLike = this._cardElement.querySelector('.element__like');
+    this._cardImage = this._cardElement.querySelector(photoSelector);
+    this._buttonLike = this._cardElement.querySelector(likeSelector);
     this._handleCardClick = handleCardClick;
   };
 
@@ -13,7 +15,7 @@ export default class Card {
     const cardElement = document
       .querySelector(this._templateSelector)
       .content
-      .querySelector('.element')
+      .querySelector(elementSelector)
       .cloneNode(true);
 
     return cardElement;
@@ -22,7 +24,7 @@ export default class Card {
   generateCard() {
     this._setEventListeners();
 
-    this._cardElement.querySelector('.element__place').textContent = this._place;
+    this._cardElement.querySelector(placeSelector).textContent = this._place;
     this._cardImage.alt = this._place;
     this._cardImage.src = this._link;
 
@@ -30,7 +32,7 @@ export default class Card {
   };
 
   _handleLike = () => {
-    this._buttonLike.classList.toggle("element__like_active");
+    this._buttonLike.classList.toggle(likeActive);
   };
 
   _handleRemove = () => {
@@ -44,7 +46,7 @@ export default class Card {
 
   _setEventListeners() {
     this._buttonLike.addEventListener('click', this._handleLike);
-    this._cardElement.querySelector('.element__remove').addEventListener('click', this._handleRemove);
+    this._cardElement.querySelector(removeSelector).addEventListener('click', this._handleRemove);
     this._cardImage.addEventListener('click', this._clickHandlerWrapper);
   };
 }
