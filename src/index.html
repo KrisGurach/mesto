@@ -7,7 +7,6 @@
   <meta name="keywords" content="красивые фото, путешествия, лайки, новые знакомства">
   <meta name="author" content="Кристина Гураченкова">
   <meta charset="UTF-8">
-  <link rel="stylesheet" href="pages/index.css">
   <title>Место</title>
 </head>
 
@@ -15,12 +14,12 @@
   <div class="page">
     <div class="container">
       <header class="header">
-        <img src="images/logotype.svg" class="logo" alt="логотип Место">
+        <img src="<%=require('./images/logotype.svg')%>" class="logo" alt="логотип Место">
       </header>
 
       <main>
         <section class="profile" aria-label="Личные данные">
-          <img src="images/user-photo.jpg" class="profile__avatar" alt="Фото пользователя">
+          <img src="<%=require('./images/user-photo.jpg')%>"class="profile__avatar" alt="Фото пользователя">
           <div class="profile__info">
             <h1 class="profile__info-name">Кристина</h1>
             <p class="profile__info-profession">Исследователь JavaScript</p>

@@ -1,3 +1,5 @@
+import './pages/index.css';
+
 // Импорт модулей
 import Card from './scripts/components/Card.js';
 import FormValidator from './scripts/components/FormValidator.js';
