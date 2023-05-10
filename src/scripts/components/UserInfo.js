@@ -1,5 +1,3 @@
-import { nameInput, professionInput} from '../utils/constants.js';
-
 export default class UserInfo {
   constructor({ name, profession }) {
     this._name = name;
@@ -13,10 +11,11 @@ export default class UserInfo {
     };
   }
 
-  setUserInfo() {
-    const info = this.getUserInfo();
-    nameInput.value = info.name;
-    professionInput.value = info.job;
+  setUserInfo(inputValues) {
+     this._name.textContent = inputValues.name;
+     this._profession.textContent = inputValues.profession;
+    // nameInput.value = info.name;
+    // professionInput.value = info.job;
   }
 }
 

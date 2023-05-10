@@ -7,15 +7,16 @@ import FormValidator from './scripts/components/FormValidator.js';
 import PopupWithForm from './scripts/components/PopupWithForm.js';
 import PopupWithImage from  './scripts/components/PopupWithImage.js';
 import { initialCards } from './scripts/utils/initialCards.js';
-import { formEditionSelector, formNewCardSelector, gallerySelector,
+import { formEditionSelector, formNewCardSelector,
   popupEditionSelector, popupNewCardSelector, popupPhotoSelector,
-  nameUser, professionUser, cardsContainerSelector, buttonAddCard,
-  buttonEditProfile, validationVariables } from './scripts/utils/constants.js';
+  nameInput, professionInput, nameUser, professionUser,
+  cardsContainerSelector,  gallerySelector,
+  buttonAddCard, buttonEditProfile, validationVariables } from './scripts/utils/constants.js';
 import UserInfo from './scripts/components/UserInfo.js';
 import Section from './scripts/components/Section.js';
 
 // Вызов функции отрисовки массива фотокарточек
-const baseCardSection = new Section({ items: initialCards, renderer: (item) => renderFunc(item, baseCardSection)}, cardsContainerSelector);
+const baseCardSection = new Section({ items: initialCards, renderer: (item) => renderCard(item, baseCardSection)}, cardsContainerSelector);
 
 baseCardSection.renderAll();
 
@@ -23,13 +24,17 @@ baseCardSection.renderAll();
 const popupEdition = new PopupWithForm(popupEditionSelector, handleFormEditionSubmit);
 const popupNewCard = new PopupWithForm(popupNewCardSelector, handleNewElement);
 
-Array.of(popupEdition, popupNewCard).forEach(a => a.setEventListeners());
+Array.of(popupEdition, popupNewCard).forEach(popup => popup.setEventListeners());
+
+// Определение нового экземпляра класса для попапа с увличенной фотокарточкой и вызов функции навешивания всех слушателей на карточку
+const popupPhoto = new PopupWithImage(popupPhotoSelector);
+popupPhoto.setEventListeners();
 
 // Вызов функции запуска валидации формы
 const formEditionValidator = new FormValidator(validationVariables, formEditionSelector);
 const formNewCardValidator = new FormValidator(validationVariables, formNewCardSelector);
 
-Array.of(formEditionValidator, formNewCardValidator).forEach(a => a.enableValidation());
+Array.of(formEditionValidator, formNewCardValidator).forEach(validator => validator.enableValidation());
 
 // Запуск отображения данных пользователя со страницы в попап и сохранение при редактировании
 const userInfo = new UserInfo({ name: nameUser, profession: professionUser });
@@ -41,30 +46,25 @@ function getCardElement(item) {
 }
 
 // Функция, вставляющая фотокарточку в разметку
-function renderFunc(item, cardSection) {
+function renderCard(item, cardSection) {
   const cardElement = getCardElement(item);
   cardSection.addItem(cardElement);
 }
 
 // Функция, отвечющая за редактирование информации
-function handleFormEditionSubmit(evt) {
+function handleFormEditionSubmit(inputValues, evt) {
     evt.preventDefault();
-
-    const inputValues = popupEdition.getInputValues();
-
-    nameUser.textContent = inputValues.name;
-    professionUser.textContent = inputValues.profession;
+    userInfo.setUserInfo(inputValues);
 
     popupEdition.close();
 };
 
 // Функция добавления новой карточки пользователем
-function handleNewElement(evt) {
+function handleNewElement(inputValues, evt) {
   evt.preventDefault();
-  const inputValues = popupNewCard.getInputValues();
   const data = [inputValues];
 
-  const newCardSection = new Section({ items: data, renderer: (item) => renderFunc(item, newCardSection)}, cardsContainerSelector);
+  const newCardSection = new Section({ items: data, renderer: (item) => renderCard(item, newCardSection)}, cardsContainerSelector);
 
   newCardSection.renderAll();
 
@@ -73,15 +73,15 @@ function handleNewElement(evt) {
 
 // Запуск функции создания рабочего попапа с увеличенным изображением
 function handleCardClick(data) {
-  const popupPhoto = new PopupWithImage(data, popupPhotoSelector);
-  popupPhoto.setEventListeners();
-  popupPhoto.open();
+  popupPhoto.open(data);
 }
 
 // Открытие и закрытие окна редактирования профиля
 buttonEditProfile.addEventListener('click', function(){
   formEditionValidator.removeErrorOpenForm();
-  userInfo.setUserInfo();
+  const info  = userInfo.getUserInfo();
+  nameInput.value = info.name;
+  professionInput.value = info.job;
   popupEdition.open();
 });
 
