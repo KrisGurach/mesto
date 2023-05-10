@@ -16,9 +16,10 @@ import UserInfo from './scripts/components/UserInfo.js';
 import Section from './scripts/components/Section.js';
 
 // Вызов функции отрисовки массива фотокарточек
-const baseCardSection = new Section({ items: initialCards, renderer: (item) => renderCard(item, baseCardSection)}, cardsContainerSelector);
+const cardSection = new Section({ items: initialCards, renderer: (item) => getCardElement(item)}, cardsContainerSelector);
 
-baseCardSection.renderAll();
+const cardElements = cardSection.renderAll();
+cardElements.forEach(cardElement => cardSection.addItem(cardElement));
 
 // Вызов функции запуска сабмита формы
 const popupEdition = new PopupWithForm(popupEditionSelector, handleFormEditionSubmit);
@@ -45,12 +46,6 @@ function getCardElement(item) {
   return newCard.generateCard();
 }
 
-// Функция, вставляющая фотокарточку в разметку
-function renderCard(item, cardSection) {
-  const cardElement = getCardElement(item);
-  cardSection.addItem(cardElement);
-}
-
 // Функция, отвечющая за редактирование информации
 function handleFormEditionSubmit(inputValues, evt) {
     evt.preventDefault();
@@ -62,11 +57,7 @@ function handleFormEditionSubmit(inputValues, evt) {
 // Функция добавления новой карточки пользователем
 function handleNewElement(inputValues, evt) {
   evt.preventDefault();
-  const data = [inputValues];
-
-  const newCardSection = new Section({ items: data, renderer: (item) => renderCard(item, newCardSection)}, cardsContainerSelector);
-
-  newCardSection.renderAll();
+  cardSection.addItem(getCardElement(inputValues));
 
   popupNewCard.close();
 };
@@ -79,9 +70,11 @@ function handleCardClick(data) {
 // Открытие и закрытие окна редактирования профиля
 buttonEditProfile.addEventListener('click', function(){
   formEditionValidator.removeErrorOpenForm();
+
   const info  = userInfo.getUserInfo();
   nameInput.value = info.name;
   professionInput.value = info.job;
+  
   popupEdition.open();
 });
 

@@ -14,8 +14,6 @@ export default class UserInfo {
   setUserInfo(inputValues) {
      this._name.textContent = inputValues.name;
      this._profession.textContent = inputValues.profession;
-    // nameInput.value = info.name;
-    // professionInput.value = info.job;
   }
 }
 

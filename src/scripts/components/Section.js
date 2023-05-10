@@ -6,7 +6,12 @@ export default class Section {
   }
 
   renderAll() {
-    this._items.forEach((data) => this._renderer(data))
+    const elements = [];
+    this._items.forEach((data) => {
+      const element = this._renderer(data);
+      elements.push(element);
+    });
+    return elements;
   }
 
   addItem(element) {
