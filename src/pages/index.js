@@ -1,19 +1,19 @@
 // Импорт css-файла
-import './pages/index.css';
+import './index.css';
 
 // Импорт модулей
-import Card from './scripts/components/Card.js';
-import FormValidator from './scripts/components/FormValidator.js';
-import PopupWithForm from './scripts/components/PopupWithForm.js';
-import PopupWithImage from  './scripts/components/PopupWithImage.js';
-import { initialCards } from './scripts/utils/initialCards.js';
+import Card from '../scripts/components/Card.js';
+import FormValidator from '../scripts/components/FormValidator.js';
+import PopupWithForm from '../scripts/components/PopupWithForm.js';
+import PopupWithImage from  '../scripts/components/PopupWithImage.js';
+import { initialCards } from '../scripts/utils/initialCards.js';
 import { formEditionSelector, formNewCardSelector,
   popupEditionSelector, popupNewCardSelector, popupPhotoSelector,
   nameInput, professionInput, nameUser, professionUser,
   cardsContainerSelector,  gallerySelector,
-  buttonAddCard, buttonEditProfile, validationVariables } from './scripts/utils/constants.js';
-import UserInfo from './scripts/components/UserInfo.js';
-import Section from './scripts/components/Section.js';
+  buttonAddCard, buttonEditProfile, validationVariables } from '../scripts/utils/constants.js';
+import UserInfo from '../scripts/components/UserInfo.js';
+import Section from '../scripts/components/Section.js';
 
 // Вызов функции отрисовки массива фотокарточек
 const cardSection = new Section({ items: initialCards, renderer: (item) => getCardElement(item)}, cardsContainerSelector);
@@ -74,7 +74,7 @@ buttonEditProfile.addEventListener('click', function(){
   const info  = userInfo.getUserInfo();
   nameInput.value = info.name;
   professionInput.value = info.job;
-  
+
   popupEdition.open();
 });
 
