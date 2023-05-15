@@ -81,6 +81,18 @@
         </div>
       </section>
 
+      <section class="popup popup_type_avatar" aria-label="Окно редактирования аватара">
+        <div class="popup__container popup__container_min-size">
+          <button class="popup__close-button popup__close-button_type_edition" type="button"></button>
+          <form novalidate class="popup__form popup__form_type_avatar" name="form-of-avatar">
+            <h2 class="popup__edit">Обновить аватар</h2>
+            <input type="url" name="avatar" placeholder="Ссылка на аватар" class="popup__input popup__input_type_avatar" pattern="https://.*" required>
+            <span class="popup__error popup__error_type_avatar"></span>
+            <button type="submit" class="popup__save-button">Сохранить</button>
+          </form>
+        </div>
+      </section>
+
       <footer class="footer">
         <p class="footer__text">&copy; 2023 Mesto Russia</p>
       </footer>
