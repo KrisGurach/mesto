@@ -21,6 +21,7 @@ const removeSelector = '.element__remove';
 // Поиск DOM-элементов
 const nameUser = document.querySelector('.profile__info-name');
 const professionUser = document.querySelector('.profile__info-profession');
+const avatar = document.querySelector('.profile__avatar');
 const nameInput = document.querySelector('.popup__input_type_name');
 const professionInput = document.querySelector('.popup__input_type_profession');
 const buttonEditProfile = document.querySelector(".profile__edit-button");
@@ -40,7 +41,7 @@ export { popupOpened, popup, popupCloseButton,
   formSelector, formEditionSelector, formNewCardSelector, inputSelector,
   popupEditionSelector, popupNewCardSelector, popupPhotoSelector,
   gallerySelector, elementSelector, photoSelector, placeSelector, likeSelector, likeActive, removeSelector,
-  cardsContainerSelector,
+  cardsContainerSelector, avatar,
   nameUser, professionUser, nameInput, professionInput,
   buttonAddCard, buttonEditProfile, validationVariables }
 
