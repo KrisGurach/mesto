@@ -1,14 +1,16 @@
 import { elementSelector, photoSelector, placeSelector, likeSelector, likeActive, removeSelector } from '../utils/constants.js';
 
 export default class Card {
-  constructor(data, templateSelector, handleCardClick) {
+  constructor(data, templateSelector, handleCardClick, handleRemoveCard) {
     this._place = data.place;
     this._link = data.link;
+    this._id = data.id;
     this._templateSelector = templateSelector;
     this._cardElement = this._getTemplate();
     this._cardImage = this._cardElement.querySelector(photoSelector);
     this._buttonLike = this._cardElement.querySelector(likeSelector);
     this._handleCardClick = handleCardClick;
+    this._handleRemoveCard = handleRemoveCard;
   };
 
   _getTemplate() {
@@ -38,6 +40,8 @@ export default class Card {
   _handleRemove = () => {
     this._cardElement.remove();
     this._cardElement = null;
+
+    this._handleRemoveCard(this._id);
   };
 
   _clickHandlerWrapper = () => {
