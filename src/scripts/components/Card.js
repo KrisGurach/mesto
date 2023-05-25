@@ -2,7 +2,7 @@ import { elementSelector, photoSelector, placeSelector, likeSelector, likeActive
   removeSelector, counterLikesSelector, myId } from '../utils/constants.js';
 
 export default class Card {
-  constructor(data, templateSelector, handleCardClick, openPopupRemoveCard) {
+  constructor(data, templateSelector, handleCardClick, openPopupRemoveCard, toggleLikeCard) {
     this._place = data.place;
     this._link = data.link;
     this._ownerId = data.ownerId;
@@ -19,6 +19,7 @@ export default class Card {
 
     this._handleCardClick = handleCardClick;
     this._openPopupRemoveCard = openPopupRemoveCard;
+    this._toggleLikeCard = toggleLikeCard;
   };
 
   _getTemplate() {
@@ -50,13 +51,15 @@ export default class Card {
     return this._cardElement;
   };
 
-  _handleLike = () => { // написать снаружи методы, отправляющие запросы, и пробросить их как коллбэки
+  _handleLike = () => { 
     this._buttonLike.classList.toggle(likeActive);
 
     if (this._buttonLike.classList.contains(likeActive)) {
+      this._toggleLikeCard(this._id, true);
       this._counterLikes.textContent = parseInt(this._counterLikes.textContent) + 1;
     }
     else {
+      this._toggleLikeCard(this._id, false);
       this._counterLikes.textContent = parseInt(this._counterLikes.textContent) - 1;
     }
   };

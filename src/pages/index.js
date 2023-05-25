@@ -12,12 +12,11 @@ import { formEditionSelector, formNewCardSelector, formEditAvatarSelector,
   popupEditionSelector, popupNewCardSelector, popupPhotoSelector, popupEditAvatarSelector, popupRemoveCardSelector,
   nameInput, professionInput, nameUser, professionUser,
   cardsContainerSelector,  gallerySelector, avatar,
-  likeSelector, likeActive,
   buttonAddCard, buttonEditProfile, buttonEditAvatar, validationVariables, myId } from '../scripts/utils/constants.js';
 
 import UserInfo from '../scripts/components/UserInfo.js';
 import Section from '../scripts/components/Section.js';
-import Apitest from '../scripts/components/apitest';
+import Apitest from '../scripts/components/apitest.js';
 
 const api = new Apitest();
 const getCards = async () => {
@@ -28,17 +27,24 @@ const webCards = await getCards();
 
 let initialCards = [];
 webCards.forEach(webCard => {
-    let b = {};
-    b.place = webCard.name;
-    b.link = webCard.link;
-    b.id = webCard._id;
-
-    b.likes = webCard.likes;
-    b.isLikeOwner = webCard.likes.some(like => like._id === myId);
-
-    b.ownerId = webCard.owner._id;
-    initialCards.push(b);
+  const cardInfo = handleWebCard(webCard);
+  initialCards.push(cardInfo);
 })
+
+function handleWebCard(webCard) {
+  let cardInfo = {};
+  cardInfo.place = webCard.name;
+  cardInfo.link = webCard.link;
+  cardInfo.likes = webCard.likes;
+  cardInfo.isLikeOwner = webCard.likes.some((like) => like._id === myId);
+  cardInfo.ownerId = webCard.owner._id;
+  cardInfo.id = webCard._id;
+  return cardInfo;
+}
+
+function toggleLikeCard(id, isLiked) {
+  api.toggleLikeCard(id, isLiked);
+}
 
 // Вызов функции отрисовки массива фотокарточек
 const cardSection = new Section({ items: initialCards, renderer: (item) => getCardElement(item)}, cardsContainerSelector);
@@ -93,7 +99,7 @@ const userInfo = new UserInfo({ name: nameUser, profession: professionUser, avat
 
 // Функция, создающая новый экземпляр класса для фотокарточки
 function getCardElement(item) {
-  const newCard = new Card(item, gallerySelector, handleCardClick, openPopupRemoveCard);
+  const newCard = new Card(item, gallerySelector, handleCardClick, openPopupRemoveCard, toggleLikeCard);
 
   return newCard.generateCard();
 }
@@ -108,13 +114,15 @@ function handleFormEditionSubmit(inputValues, evt) {
 };
 
 // Функция добавления новой карточки пользователем
-function handleNewElement(inputValues, evt) {
+async function handleNewElement(inputValues, evt) {
   evt.preventDefault();
-  inputValues.likes = [];
-  inputValues.ownerId = myId;
-  cardSection.addItem(getCardElement(inputValues));
-  api.sendNewCard(inputValues);
+  const cardInfo = await api.sendNewCard(inputValues);
 
+  inputValues.likes = cardInfo.likes;
+  inputValues.id = cardInfo._id;
+  inputValues.ownerId = myId;
+
+  cardSection.addItem(getCardElement(inputValues));
   popupNewCard.close();
 };
 
@@ -146,14 +154,12 @@ buttonEditAvatar.addEventListener('click', function(){
   popupEditionAvatar.open();
 })
 
-
 const getWebInfo = async () => {
   return await api.getWebInfoAsync();
 }
 
 const webInfo = await getWebInfo();
 userInfo.setWebUserInfo(webInfo);
-
 
 
 
