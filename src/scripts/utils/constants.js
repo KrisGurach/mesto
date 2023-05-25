@@ -32,7 +32,9 @@ const nameInput = document.querySelector('.popup__input_type_name');
 const professionInput = document.querySelector('.popup__input_type_profession');
 const buttonEditProfile = document.querySelector(".profile__edit-button");
 const buttonAddCard = document.querySelector(".profile__add-button");
-const buttonEditAvatar = document.querySelector('.profile__button-edit-avatar')
+const buttonEditAvatar = document.querySelector('.profile__button-edit-avatar');
+
+const counterLikesSelector = '.element__like-counter';
 
 // Объект настроек с селекторами для валидации
 const validationVariables = {
@@ -50,7 +52,7 @@ export { popupOpened, popup, popupCloseButton,
   gallerySelector, elementSelector, photoSelector, placeSelector, likeSelector, likeActive, removeSelector,
   cardsContainerSelector, avatar,
   nameUser, professionUser, nameInput, professionInput,
-  buttonAddCard, buttonEditProfile, buttonEditAvatar, validationVariables, myId }
+  buttonAddCard, buttonEditProfile, buttonEditAvatar, validationVariables, myId, counterLikesSelector }
 
 
 

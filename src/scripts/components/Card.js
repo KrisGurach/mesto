@@ -1,16 +1,24 @@
-import { elementSelector, photoSelector, placeSelector, likeSelector, likeActive, removeSelector } from '../utils/constants.js';
+import { elementSelector, photoSelector, placeSelector, likeSelector, likeActive,
+  removeSelector, counterLikesSelector, myId } from '../utils/constants.js';
 
 export default class Card {
-  constructor(data, templateSelector, handleCardClick, handleRemoveCard) {
+  constructor(data, templateSelector, handleCardClick, openPopupRemoveCard) {
     this._place = data.place;
     this._link = data.link;
+    this._ownerId = data.ownerId;
     this._id = data.id;
     this._templateSelector = templateSelector;
     this._cardElement = this._getTemplate();
     this._cardImage = this._cardElement.querySelector(photoSelector);
     this._buttonLike = this._cardElement.querySelector(likeSelector);
+    this._buttonRemove = this._cardElement.querySelector(removeSelector);
+
+    this._isLikeOwner = data.isLikeOwner;
+    this._likesCount = data.likes.length;
+    this._counterLikes = this._cardElement.querySelector(counterLikesSelector);
+
     this._handleCardClick = handleCardClick;
-    this._handleRemoveCard = handleRemoveCard;
+    this._openPopupRemoveCard = openPopupRemoveCard;
   };
 
   _getTemplate() {
@@ -29,19 +37,32 @@ export default class Card {
     this._cardElement.querySelector(placeSelector).textContent = this._place;
     this._cardImage.alt = this._place;
     this._cardImage.src = this._link;
+    this._counterLikes.textContent = this._likesCount;
+
+    if (this._ownerId === myId) {
+      this._buttonRemove.classList.add('element__remove_active');
+    }
+
+    if (this._isLikeOwner) {
+      this._buttonLike.classList.add(likeActive);
+    }
 
     return this._cardElement;
   };
 
-  _handleLike = () => {
+  _handleLike = () => { // написать снаружи методы, отправляющие запросы, и пробросить их как коллбэки
     this._buttonLike.classList.toggle(likeActive);
+
+    if (this._buttonLike.classList.contains(likeActive)) {
+      this._counterLikes.textContent = parseInt(this._counterLikes.textContent) + 1;
+    }
+    else {
+      this._counterLikes.textContent = parseInt(this._counterLikes.textContent) - 1;
+    }
   };
 
   _handleRemove = () => {
-    this._cardElement.remove();
-    this._cardElement = null;
-
-    this._handleRemoveCard(this._id);
+    this._openPopupRemoveCard(this._cardElement, this._id);
   };
 
   _clickHandlerWrapper = () => {
@@ -50,7 +71,7 @@ export default class Card {
 
   _setEventListeners() {
     this._buttonLike.addEventListener('click', this._handleLike);
-    this._cardElement.querySelector(removeSelector).addEventListener('click', this._handleRemove);
+    this._buttonRemove.addEventListener('click', this._handleRemove);
     this._cardImage.addEventListener('click', this._clickHandlerWrapper);
   };
 }

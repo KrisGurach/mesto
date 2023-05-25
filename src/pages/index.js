@@ -6,15 +6,18 @@ import Card from '../scripts/components/Card.js';
 import FormValidator from '../scripts/components/FormValidator.js';
 import PopupWithForm from '../scripts/components/PopupWithForm.js';
 import PopupWithImage from  '../scripts/components/PopupWithImage.js';
+import PopupWithRemove from '../scripts/components/PopupWithRemove';
+
 import { formEditionSelector, formNewCardSelector, formEditAvatarSelector,
   popupEditionSelector, popupNewCardSelector, popupPhotoSelector, popupEditAvatarSelector, popupRemoveCardSelector,
   nameInput, professionInput, nameUser, professionUser,
   cardsContainerSelector,  gallerySelector, avatar,
-  buttonAddCard, buttonEditProfile, buttonEditAvatar, validationVariables } from '../scripts/utils/constants.js';
+  likeSelector, likeActive,
+  buttonAddCard, buttonEditProfile, buttonEditAvatar, validationVariables, myId } from '../scripts/utils/constants.js';
+
 import UserInfo from '../scripts/components/UserInfo.js';
 import Section from '../scripts/components/Section.js';
 import Apitest from '../scripts/components/apitest';
-import Popup from '../scripts/components/Popup';
 
 const api = new Apitest();
 const getCards = async () => {
@@ -29,6 +32,11 @@ webCards.forEach(webCard => {
     b.place = webCard.name;
     b.link = webCard.link;
     b.id = webCard._id;
+
+    b.likes = webCard.likes;
+    b.isLikeOwner = webCard.likes.some(like => like._id === myId);
+
+    b.ownerId = webCard.owner._id;
     initialCards.push(b);
 })
 
@@ -39,7 +47,19 @@ const cardElements = cardSection.renderAll();
 cardElements.forEach(cardElement => cardSection.addItem(cardElement));
 
 // Попап удаления карточки без формы
-const popupRemoveCard = new Popup(popupRemoveCardSelector);
+const popupRemoveCard = new PopupWithRemove(popupRemoveCardSelector, handleRemoveCard);
+
+function openPopupRemoveCard(card, id) {
+  popupRemoveCard.open();
+  popupRemoveCard.setEventListeners(card, id);
+}
+
+function handleRemoveCard(card, id) {
+  api.removeCard(id);
+  card.remove();
+  card = null;
+}
+
 
 // Вызов функции запуска сабмита формы
 const popupEdition = new PopupWithForm(popupEditionSelector, handleFormEditionSubmit);
@@ -73,21 +93,15 @@ const userInfo = new UserInfo({ name: nameUser, profession: professionUser, avat
 
 // Функция, создающая новый экземпляр класса для фотокарточки
 function getCardElement(item) {
-  const newCard = new Card(item, gallerySelector, handleCardClick, handleRemoveCard);
-  return newCard.generateCard();
-}
+  const newCard = new Card(item, gallerySelector, handleCardClick, openPopupRemoveCard);
 
-// Функция удаления карточки с сервера
-function handleRemoveCard(id) {
-  api.removeCard(id);
+  return newCard.generateCard();
 }
 
 // Функция, отвечющая за редактирование информации
 function handleFormEditionSubmit(inputValues, evt) {
     evt.preventDefault();
-
     userInfo.setUserInfo(inputValues);
-
     api.sendWebInfo(inputValues);
 
     popupEdition.close();
@@ -96,6 +110,8 @@ function handleFormEditionSubmit(inputValues, evt) {
 // Функция добавления новой карточки пользователем
 function handleNewElement(inputValues, evt) {
   evt.preventDefault();
+  inputValues.likes = [];
+  inputValues.ownerId = myId;
   cardSection.addItem(getCardElement(inputValues));
   api.sendNewCard(inputValues);
 
