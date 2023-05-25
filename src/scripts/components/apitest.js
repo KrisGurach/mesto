@@ -2,7 +2,7 @@ export default class Apitest {
   constructor() {}
 
   getCardsAsync = async () => {
-    let res = await fetch("https://mesto.nomoreparties.co/v1/cohort-66/cards", {
+    const res = await fetch("https://mesto.nomoreparties.co/v1/cohort-66/cards", {
       headers: {
         authorization: "11d9edf0-d595-4b63-9e37-e0fd6cd15a36",
       },
@@ -25,7 +25,7 @@ export default class Apitest {
   };
 
   getWebInfoAsync = async () => {
-    let response = await fetch(
+    const response = await fetch(
       "https://nomoreparties.co/v1/cohort-66/users/me", {
         headers: {
           authorization: "11d9edf0-d595-4b63-9e37-e0fd6cd15a36",
@@ -39,7 +39,7 @@ export default class Apitest {
   // переписать в promise.all
 
   sendNewCard = async (inputValues) => {
-    let response = await fetch(
+    const response = await fetch(
       "https://mesto.nomoreparties.co/v1/cohort-66/cards",{
         method: "POST",
         headers: {
