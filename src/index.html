@@ -19,10 +19,12 @@
 
       <main>
         <section class="profile" aria-label="Личные данные">
-          <img src="<%=require('./images/user-photo.jpg')%>"class="profile__avatar" alt="Фото пользователя">
+          <button class="profile__button-edit-avatar" type="button">
+            <img src="#" class="profile__avatar" alt="Фото пользователя">
+          </button>
           <div class="profile__info">
-            <h1 class="profile__info-name">Кристина</h1>
-            <p class="profile__info-profession">Исследователь JavaScript</p>
+            <h1 class="profile__info-name"></h1>
+            <p class="profile__info-profession"></p>
           </div>
           <button class="profile__edit-button" type="button"></button>
           <button class="profile__add-button" type="button"></button>
@@ -35,13 +37,15 @@
               <button class="element__remove" type="button"></button>
               <div class="element__description">
                 <h2 class="element__place"></h2>
-                <button class="element__like" type="button"></button>
+                <div class="element__likes">
+                  <button class="element__like" type="button"></button>
+                  <span class="element__like-counter">0</span>
+                </div>
               </div>
             </div>
           </template>
         </section>
       </main>
-
 
       <section class="popup popup_type_photo" aria-label="Окно увеличенной фотографии">
         <div class="popup__container">
@@ -62,7 +66,7 @@
             <span class="popup__error popup__error_type_name"></span>
             <input type="text" name="profession" placeholder="Введите профессию" class="popup__input popup__input_type_profession" minlength="2" maxlength="400" required>
             <span class="popup__error popup__error_type_profession"></span>
-            <button type="submit" class="popup__save-button">Сохранить</button>
+            <button type="submit" value="Сохранить" class="popup__save-button">Сохранить</button>
           </form>
         </div>
       </section>
@@ -76,7 +80,29 @@
             <span class="popup__error popup__error_type_place"></span>
             <input type="url" name="link" placeholder="Ссылка на картинку" class="popup__input popup__input_type_link" pattern="https://.*" required>
             <span class="popup__error popup__error_type_link"></span>
-            <button type="submit" class="popup__save-button">Создать</button>
+            <button type="submit" value="Создать" class="popup__save-button">Создать</button>
+          </form>
+        </div>
+      </section>
+
+      <section class="popup popup_type_avatar" aria-label="Окно редактирования аватара">
+        <div class="popup__container popup__container_min-size">
+          <button class="popup__close-button popup__close-button_type_edition" type="button"></button>
+          <form novalidate class="popup__form popup__form_type_avatar" name="form-of-avatar">
+            <h2 class="popup__edit">Обновить аватар</h2>
+            <input type="url" name="avatar" placeholder="Ссылка на аватар" class="popup__input popup__input_type_avatar" pattern="https://.*" required>
+            <span class="popup__error popup__error_type_avatar"></span>
+            <button type="submit" value="Сохранить" class="popup__save-button">Сохранить</button>
+          </form>
+        </div>
+      </section>
+
+      <section class="popup popup_type_remove-photo" aria-label="Окно подтверждения удаления фото">
+        <div class="popup__container popup__container_min-size">
+          <button class="popup__close-button popup__close-button_type_remove-photo" type="button"></button>
+          <form novalidate class="popup__form" name="form-of-remove">
+            <h2 class="popup__heading">Вы уверены?</h2>
+            <button type="submit" class="popup__save-button">Да</button>
           </form>
         </div>
       </section>
