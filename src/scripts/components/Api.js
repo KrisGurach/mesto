@@ -73,7 +73,8 @@ export default class Api {
       headers: {
         authorization: "11d9edf0-d595-4b63-9e37-e0fd6cd15a36"
       }
-    }).catch((err) => console.log(err));
+    })
+    .catch((err) => console.log(err));
   };
 
   sendAvatar = (link, buttonSave) => {

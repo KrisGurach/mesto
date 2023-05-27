@@ -11,7 +11,7 @@ import PopupWithRemove from '../scripts/components/PopupWithRemove';
 import { formEditionSelector, formNewCardSelector, formEditAvatarSelector,
   popupEditionSelector, popupNewCardSelector, popupPhotoSelector, popupEditAvatarSelector, popupRemoveCardSelector,
   nameInput, professionInput, nameUser, professionUser,
-  cardsContainerSelector,  gallerySelector, avatar, buttonsSave,
+  cardsContainerSelector,  gallerySelector, avatar,
   buttonAddCard, buttonEditProfile, buttonEditAvatar, validationVariables, myId } from '../scripts/utils/constants.js';
 
 import UserInfo from '../scripts/components/UserInfo.js';
@@ -21,10 +21,34 @@ import Api from '../scripts/components/Api.js';
 // Запуск отображения данных пользователя со страницы в попап и сохранение при редактировании
 const userInfo = new UserInfo({ name: nameUser, profession: professionUser, avatar: avatar });
 
-const api = new Api();
+// Вызов функции запуска отправки формы
+const popupEdition = new PopupWithForm(popupEditionSelector, handleFormEditionSubmit);
+const popupNewCard = new PopupWithForm(popupNewCardSelector, handleNewElement);
+const popupEditionAvatar = new PopupWithForm(popupEditAvatarSelector, handleEditAvatar);
 
+Array.of(popupEdition, popupNewCard, popupEditionAvatar).forEach(popup => popup.setEventListeners());
+
+// Определение нового экземпляра класса для попапа с увeличенной фотокарточкой и вызов функции навешивания всех слушателей на карточку
+const popupPhoto = new PopupWithImage(popupPhotoSelector);
+popupPhoto.setEventListeners();
+
+// Вызов функции удаления карточки
+const popupRemoveCard = new PopupWithRemove(popupRemoveCardSelector, handleRemoveCard);
+
+// Вызов функции запуска валидации формы
+const formEditionValidator = new FormValidator(validationVariables, formEditionSelector);
+const formNewCardValidator = new FormValidator(validationVariables, formNewCardSelector);
+const formEditAvatarValidator = new FormValidator(validationVariables, formEditAvatarSelector)
+
+Array.of(formEditionValidator, formNewCardValidator, formEditAvatarValidator).forEach(validator => validator.enableValidation());
+
+// Создание перезаписывающегося экземпляра класса добавления карточек
 let cardSection = new Section({}, cardsContainerSelector);
 
+// Создание экземпляра класса, описывающего запросы к серверу
+const api = new Api();
+
+// Обработка промисов по загрузки изначальных карточек и информации с сервера на страницу
 Promise.all([api.getWebInfo(), api.getCards()])
   .then((results) => {
     const webInfo = results[0];
@@ -46,66 +70,19 @@ Promise.all([api.getWebInfo(), api.getCards()])
   })
   .catch((err) => console.log(err));
 
+// Функция, обрабатывающая массив информации об одной карточки с сервера
 function handleWebCard(webCard) {
   let cardInfo = {};
+
   cardInfo.place = webCard.name;
   cardInfo.link = webCard.link;
   cardInfo.likes = webCard.likes;
   cardInfo.isLikeOwner = webCard.likes.some((like) => like._id === myId);
   cardInfo.ownerId = webCard.owner._id;
   cardInfo.id = webCard._id;
+
   return cardInfo;
 }
-
-function toggleLikeCard(id, isLiked) {
-  api.toggleLikeCard(id, isLiked);
-}
-
-// Вызов функции отрисовки массива фотокарточек
-
-
-// Попап удаления карточки без формы
-const popupRemoveCard = new PopupWithRemove(popupRemoveCardSelector, handleRemoveCard);
-
-function openPopupRemoveCard(card, id) {
-  popupRemoveCard.open();
-  popupRemoveCard.setEventListeners(card, id);
-}
-
-function handleRemoveCard(card, id) {
-  api.removeCard(id);
-  card.remove();
-  card = null;
-}
-
-
-// Вызов функции запуска сабмита формы
-const popupEdition = new PopupWithForm(popupEditionSelector, handleFormEditionSubmit);
-const popupNewCard = new PopupWithForm(popupNewCardSelector, handleNewElement);
-const popupEditionAvatar = new PopupWithForm(popupEditAvatarSelector, handleEditAvatar);
-
-function handleEditAvatar(inputValues, evt, buttonSave) {
-  evt.preventDefault();
-
-  avatar.src = inputValues.avatar;
-  renderLoading(true, buttonSave);
-  api.sendAvatar(inputValues.avatar, buttonSave);
-
-  popupEditionAvatar.close();
-};
-
-Array.of(popupEdition, popupNewCard, popupEditionAvatar).forEach(popup => popup.setEventListeners());
-
-// Определение нового экземпляра класса для попапа с увeличенной фотокарточкой и вызов функции навешивания всех слушателей на карточку
-const popupPhoto = new PopupWithImage(popupPhotoSelector);
-popupPhoto.setEventListeners();
-
-// Вызов функции запуска валидации формы
-const formEditionValidator = new FormValidator(validationVariables, formEditionSelector);
-const formNewCardValidator = new FormValidator(validationVariables, formNewCardSelector);
-const formEditAvatarValidator = new FormValidator(validationVariables, formEditAvatarSelector)
-
-Array.of(formEditionValidator, formNewCardValidator, formEditAvatarValidator).forEach(validator => validator.enableValidation());
 
 // Функция, создающая новый экземпляр класса для фотокарточки
 function getCardElement(item) {
@@ -114,7 +91,23 @@ function getCardElement(item) {
   return newCard.generateCard();
 }
 
-// Функция, отвечющая за редактирование информации
+// Функция создания рабочего попапа с увеличенным изображением
+function handleCardClick(data) {
+  popupPhoto.open(data);
+}
+
+// Функция открытия попапа удаления карточки
+function openPopupRemoveCard(card, id) {
+  popupRemoveCard.open();
+  popupRemoveCard.setEventListeners(card, id);
+}
+
+// Функция, отправляющая информацию о смене состояния лайка карточки на сервер
+function toggleLikeCard(id, isLiked) {
+  api.toggleLikeCard(id, isLiked);
+}
+
+// Функция, отвечющая за редактирование информации  и отправки данных на сервер
 function handleFormEditionSubmit(inputValues, evt, buttonSave) {
     evt.preventDefault();
 
@@ -125,8 +118,8 @@ function handleFormEditionSubmit(inputValues, evt, buttonSave) {
     popupEdition.close();
 };
 
-// Функция добавления новой карточки пользователем
-async function handleNewElement(inputValues, evt, buttonSave) {
+// Функция добавления новой карточки пользователем и отправки данных на сервер
+function handleNewElement(inputValues, evt, buttonSave) {
   evt.preventDefault();
 
   renderLoading(true, buttonSave);
@@ -143,13 +136,26 @@ async function handleNewElement(inputValues, evt, buttonSave) {
   popupNewCard.close();
 };
 
-// Запуск функции создания рабочего попапа с увеличенным изображением
-function handleCardClick(data) {
-  popupPhoto.open(data);
+// Функция изменения аватара и отправки данных на сервер
+function handleEditAvatar(inputValues, evt, buttonSave) {
+  evt.preventDefault();
+
+  avatar.src = inputValues.avatar;
+  renderLoading(true, buttonSave);
+  api.sendAvatar(inputValues.avatar, buttonSave)
+
+  popupEditionAvatar.close();
+};
+
+// Функция удаления с сервера и разметки карточки
+function handleRemoveCard(card, id) {
+  api.removeCard(id)
+  card.remove();
+  card = null;
 }
 
+// Функция отрисовывания ожидания загрузки
 function renderLoading(isLoading, buttonSave) {
-  debugger;
   buttonSave.textContent = isLoading ? 'Сохранение...' : buttonSave.value;
 }
 
@@ -179,12 +185,6 @@ buttonEditAvatar.addEventListener('click', function(){
 
 
 export  { renderLoading }
-
-
-
-
-
-
 
 
 
