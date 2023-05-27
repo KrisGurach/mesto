@@ -84,11 +84,12 @@ const popupEdition = new PopupWithForm(popupEditionSelector, handleFormEditionSu
 const popupNewCard = new PopupWithForm(popupNewCardSelector, handleNewElement);
 const popupEditionAvatar = new PopupWithForm(popupEditAvatarSelector, handleEditAvatar);
 
-function handleEditAvatar(inputValues, evt) {
+function handleEditAvatar(inputValues, evt, buttonSave) {
   evt.preventDefault();
 
   avatar.src = inputValues.avatar;
-  api.sendAvatar(inputValues.avatar);
+  renderLoading(true, buttonSave);
+  api.sendAvatar(inputValues.avatar, buttonSave);
 
   popupEditionAvatar.close();
 };
@@ -114,22 +115,22 @@ function getCardElement(item) {
 }
 
 // Функция, отвечющая за редактирование информации
-function handleFormEditionSubmit(inputValues, evt) {
+function handleFormEditionSubmit(inputValues, evt, buttonSave) {
     evt.preventDefault();
 
     userInfo.setUserInfo(inputValues);
-    renderLoading(true);
-    api.sendWebInfo(inputValues);
+    renderLoading(true, buttonSave);
+    api.sendWebInfo(inputValues, buttonSave);
 
     popupEdition.close();
 };
 
 // Функция добавления новой карточки пользователем
-async function handleNewElement(inputValues, evt) {
+async function handleNewElement(inputValues, evt, buttonSave) {
   evt.preventDefault();
 
-  renderLoading(true);
-  api.sendNewCard(inputValues)
+  renderLoading(true, buttonSave);
+  api.sendNewCard(inputValues, buttonSave)
     .then((cardInfo) => {
     inputValues.likes = cardInfo.likes;
     inputValues.id = cardInfo._id;
@@ -147,9 +148,9 @@ function handleCardClick(data) {
   popupPhoto.open(data);
 }
 
-function renderLoading(isLoading) {
+function renderLoading(isLoading, buttonSave) {
   debugger;
-  buttonsSave.forEach(b => b.textContent = isLoading ? 'Сохранение...' : 'Сохранить');
+  buttonSave.textContent = isLoading ? 'Сохранение...' : buttonSave.value;
 }
 
 // Открытие и закрытие окна редактирования профиля
