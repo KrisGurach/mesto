@@ -11,25 +11,40 @@ import PopupWithRemove from '../scripts/components/PopupWithRemove';
 import { formEditionSelector, formNewCardSelector, formEditAvatarSelector,
   popupEditionSelector, popupNewCardSelector, popupPhotoSelector, popupEditAvatarSelector, popupRemoveCardSelector,
   nameInput, professionInput, nameUser, professionUser,
-  cardsContainerSelector,  gallerySelector, avatar,
+  cardsContainerSelector,  gallerySelector, avatar, buttonsSave,
   buttonAddCard, buttonEditProfile, buttonEditAvatar, validationVariables, myId } from '../scripts/utils/constants.js';
 
 import UserInfo from '../scripts/components/UserInfo.js';
 import Section from '../scripts/components/Section.js';
-import Apitest from '../scripts/components/apitest.js';
+import Api from '../scripts/components/Api.js';
 
-const api = new Apitest();
-const getCards = async () => {
-  return await api.getCardsAsync();
-}
+// Запуск отображения данных пользователя со страницы в попап и сохранение при редактировании
+const userInfo = new UserInfo({ name: nameUser, profession: professionUser, avatar: avatar });
 
-const webCards = await getCards();
+const api = new Api();
 
-let initialCards = [];
-webCards.forEach(webCard => {
-  const cardInfo = handleWebCard(webCard);
-  initialCards.push(cardInfo);
-})
+let cardSection = new Section({}, cardsContainerSelector);
+
+Promise.all([api.getWebInfo(), api.getCards()])
+  .then((results) => {
+    const webInfo = results[0];
+    const webCards = results[1];
+
+    userInfo.setWebUserInfo(webInfo);
+
+    let initialCards = [];
+
+    webCards.forEach((webCard) => {
+      const cardInfo = handleWebCard(webCard);
+      initialCards.push(cardInfo);
+    });
+
+    cardSection = new Section({ items: initialCards, renderer: (item) => getCardElement(item) }, cardsContainerSelector);
+
+    const cardElements = cardSection.renderAll();
+    cardElements.forEach((cardElement) => cardSection.addItem(cardElement));
+  })
+  .catch((err) => console.log(err));
 
 function handleWebCard(webCard) {
   let cardInfo = {};
@@ -47,10 +62,7 @@ function toggleLikeCard(id, isLiked) {
 }
 
 // Вызов функции отрисовки массива фотокарточек
-const cardSection = new Section({ items: initialCards, renderer: (item) => getCardElement(item)}, cardsContainerSelector);
 
-const cardElements = cardSection.renderAll();
-cardElements.forEach(cardElement => cardSection.addItem(cardElement));
 
 // Попап удаления карточки без формы
 const popupRemoveCard = new PopupWithRemove(popupRemoveCardSelector, handleRemoveCard);
@@ -94,9 +106,6 @@ const formEditAvatarValidator = new FormValidator(validationVariables, formEditA
 
 Array.of(formEditionValidator, formNewCardValidator, formEditAvatarValidator).forEach(validator => validator.enableValidation());
 
-// Запуск отображения данных пользователя со страницы в попап и сохранение при редактировании
-const userInfo = new UserInfo({ name: nameUser, profession: professionUser, avatar: avatar });
-
 // Функция, создающая новый экземпляр класса для фотокарточки
 function getCardElement(item) {
   const newCard = new Card(item, gallerySelector, handleCardClick, openPopupRemoveCard, toggleLikeCard);
@@ -107,7 +116,9 @@ function getCardElement(item) {
 // Функция, отвечющая за редактирование информации
 function handleFormEditionSubmit(inputValues, evt) {
     evt.preventDefault();
+
     userInfo.setUserInfo(inputValues);
+    renderLoading(true);
     api.sendWebInfo(inputValues);
 
     popupEdition.close();
@@ -116,19 +127,29 @@ function handleFormEditionSubmit(inputValues, evt) {
 // Функция добавления новой карточки пользователем
 async function handleNewElement(inputValues, evt) {
   evt.preventDefault();
-  const cardInfo = await api.sendNewCard(inputValues);
 
-  inputValues.likes = cardInfo.likes;
-  inputValues.id = cardInfo._id;
-  inputValues.ownerId = myId;
+  renderLoading(true);
+  api.sendNewCard(inputValues)
+    .then((cardInfo) => {
+    inputValues.likes = cardInfo.likes;
+    inputValues.id = cardInfo._id;
+    inputValues.ownerId = myId;
 
-  cardSection.addItem(getCardElement(inputValues));
+    cardSection.addItem(getCardElement(inputValues));
+  })
+    .catch((err) => console.log(err));
+
   popupNewCard.close();
 };
 
 // Запуск функции создания рабочего попапа с увеличенным изображением
 function handleCardClick(data) {
   popupPhoto.open(data);
+}
+
+function renderLoading(isLoading) {
+  debugger;
+  buttonsSave.forEach(b => b.textContent = isLoading ? 'Сохранение...' : 'Сохранить');
 }
 
 // Открытие и закрытие окна редактирования профиля
@@ -154,12 +175,14 @@ buttonEditAvatar.addEventListener('click', function(){
   popupEditionAvatar.open();
 })
 
-const getWebInfo = async () => {
-  return await api.getWebInfoAsync();
-}
 
-const webInfo = await getWebInfo();
-userInfo.setWebUserInfo(webInfo);
+
+export  { renderLoading }
+
+
+
+
+
 
 
 
