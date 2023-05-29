@@ -63,12 +63,16 @@ Promise.all([api.getWebInfo(), api.getCards()])
       initialCards.push(cardInfo);
     });
 
-    cardSection = new Section({ items: initialCards, renderer: (item) => getCardElement(item) }, cardsContainerSelector);
+    cardSection = new Section({ items: initialCards, renderer: (item) => renderCard(item) }, cardsContainerSelector);
 
-    const cardElements = cardSection.renderAll();
-    cardElements.forEach((cardElement) => cardSection.addItem(cardElement));
+    cardSection.renderAll();
   })
   .catch((err) => console.log(err));
+
+// Функция
+function renderCard(data) {
+  cardSection.addItem(getCardElement(data));
+}
 
 // Функция, обрабатывающая массив информации об одной карточки с сервера
 function handleWebCard(webCard) {
@@ -108,9 +112,7 @@ function toggleLikeCard(id, isLiked) {
 }
 
 // Функция, отвечющая за редактирование информации  и отправки данных на сервер
-function handleFormEditionSubmit(inputValues, evt, buttonSave) {
-    evt.preventDefault();
-
+function handleFormEditionSubmit(inputValues, buttonSave) {
     userInfo.setUserInfo(inputValues);
     renderLoading(true, buttonSave);
     api.sendWebInfo(inputValues, buttonSave);
@@ -119,9 +121,7 @@ function handleFormEditionSubmit(inputValues, evt, buttonSave) {
 };
 
 // Функция добавления новой карточки пользователем и отправки данных на сервер
-function handleNewElement(inputValues, evt, buttonSave) {
-  evt.preventDefault();
-
+function handleNewElement(inputValues, buttonSave) {
   renderLoading(true, buttonSave);
   api.sendNewCard(inputValues, buttonSave)
     .then((cardInfo) => {
@@ -129,7 +129,7 @@ function handleNewElement(inputValues, evt, buttonSave) {
     inputValues.id = cardInfo._id;
     inputValues.ownerId = myId;
 
-    cardSection.addItem(getCardElement(inputValues));
+    renderCard(inputValues);
   })
     .catch((err) => console.log(err));
 
@@ -137,9 +137,7 @@ function handleNewElement(inputValues, evt, buttonSave) {
 };
 
 // Функция изменения аватара и отправки данных на сервер
-function handleEditAvatar(inputValues, evt, buttonSave) {
-  evt.preventDefault();
-
+function handleEditAvatar(inputValues, buttonSave) {
   avatar.src = inputValues.avatar;
   renderLoading(true, buttonSave);
   api.sendAvatar(inputValues.avatar, buttonSave)

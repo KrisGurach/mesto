@@ -2,6 +2,8 @@
   grid-area: avatar;
   margin-right: 30px;
   padding: 0;
+  width: 120px;
+  height: 120px;
   background-color: var(--black-opacity-00-color);
   border-radius: 50%;
   border: none;
@@ -9,6 +11,8 @@
 }
 
 .profile__button-edit-avatar::before {
+  width: 120px;
+  height: 120px;
   background-color: var(--black-opacity-08-color);
   background-image: url(../../../images/edit-button.svg);
   background-repeat: no-repeat;
