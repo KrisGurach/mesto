@@ -115,9 +115,10 @@ function toggleLikeCard(id, isLiked) {
 function handleFormEditionSubmit(inputValues, buttonSave) {
     userInfo.setUserInfo(inputValues);
     renderLoading(true, buttonSave);
-    api.sendWebInfo(inputValues, buttonSave)
+    api.updateProfileData(inputValues, buttonSave)
       .then(popupEdition.close())
-      .catch((err) => console.log(err));
+      .catch((err) => console.log(err))
+      .finally(renderLoading(false, buttonSave));
 };
 
 // Функция добавления новой карточки пользователем и отправки данных на сервер
@@ -132,7 +133,8 @@ function handleNewElement(inputValues, buttonSave) {
     renderCard(inputValues);
     popupNewCard.close();
   })
-    .catch((err) => console.log(err));
+    .catch((err) => console.log(err))
+    .finally(renderLoading(false, buttonSave));
 };
 
 // Функция изменения аватара и отправки данных на сервер
@@ -141,7 +143,8 @@ function handleEditAvatar(inputValues, buttonSave) {
   renderLoading(true, buttonSave);
   api.sendAvatar(inputValues.avatar, buttonSave)
     .then(popupEditionAvatar.close())
-    .catch((err) => console.log(err));
+    .catch((err) => console.log(err))
+    .finally(renderLoading(false, buttonSave));
 };
 
 // Функция удаления с сервера и разметки карточки
@@ -152,7 +155,7 @@ function handleRemoveCard(card, id) {
 
 // Функция отрисовывания ожидания загрузки
 function renderLoading(isLoading, buttonSave) {
-  buttonSave.textContent = isLoading ? 'Сохранение...' : buttonSave.value;
+  debugger;buttonSave.textContent = isLoading ? 'Сохранение...' : buttonSave.value;
 }
 
 // Открытие и закрытие окна редактирования профиля

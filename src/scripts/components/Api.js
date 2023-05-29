@@ -6,6 +6,10 @@ export default class Api {
     this._token = token;
   }
 
+  _getResponseData = (res) => {
+    return res.ok ? res.json() : Promise.reject(`Ошибка: ${res.status}`)
+  }
+
   getCards = () => {
     return fetch(
       this._url + "/cards", {
@@ -14,11 +18,10 @@ export default class Api {
         }
       }
     )
-      .then((res) => res.ok ? res.json() : Promise.reject(`Ошибка: ${res.status}`))
-      .catch((err) => console.log(err));
+      .then((res) => this._getResponseData(res));
   }
 
-  sendWebInfo = (inputValues, buttonSave) => {
+  updateProfileData = (inputValues) => {
     return fetch(this._url + "/users/me", {
       method: "PATCH",
       headers: {
@@ -30,8 +33,7 @@ export default class Api {
         about: inputValues.profession
       })
     })
-    .catch((err) => console.log(err))
-    .finally(renderLoading(false, buttonSave));
+    .then((res) => res.ok ? Promise.resolve() : Promise.reject(`Ошибка: ${res.status}`));
   };
 
   getWebInfo = () => {
@@ -40,11 +42,10 @@ export default class Api {
         authorization: this._token
       }
     })
-      .then((res) => res.ok ? res.json() : Promise.reject(`Ошибка: ${res.status}`))
-      .catch((err) => console.log(err));
+      .then((res) => this._getResponseData(res));
   };
 
-  sendNewCard = (inputValues, buttonSave) => {
+  sendNewCard = (inputValues) => {
     return fetch(this._url + "/cards", {
       method: "POST",
       headers: {
@@ -56,9 +57,7 @@ export default class Api {
         link: inputValues.link
       })
     })
-      .then((res) => res.ok ? res.json() : Promise.reject(`Ошибка: ${res.status}`))
-      .catch((err) => console.log(err))
-      .finally(renderLoading(false, buttonSave));
+      .then((res) => this._getResponseData(res));
   };
 
   removeCard = (id) => {
@@ -73,6 +72,7 @@ export default class Api {
 
   toggleLikeCard = (cardId, isLiked) => {
     const method = isLiked ? "PUT" : "DELETE";
+
     fetch(this._url + `/cards/${cardId}/likes`, {
       method: method,
       headers: {
@@ -82,7 +82,7 @@ export default class Api {
     .catch((err) => console.log(err));
   };
 
-  sendAvatar = (link, buttonSave) => {
+  sendAvatar = (link) => {
     return fetch(this._url + "/users/me/avatar", {
       method: "PATCH",
       headers: {
@@ -92,9 +92,7 @@ export default class Api {
       body: JSON.stringify({
         avatar: link
       })
-    })
-    .catch((err) => console.log(err))
-    .finally(renderLoading(false, buttonSave));
+    });
   };
 }
 
