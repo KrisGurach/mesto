@@ -12,7 +12,7 @@ import { formEditionSelector, formNewCardSelector, formEditAvatarSelector,
   popupEditionSelector, popupNewCardSelector, popupPhotoSelector, popupEditAvatarSelector, popupRemoveCardSelector,
   nameInput, professionInput, nameUser, professionUser,
   cardsContainerSelector,  gallerySelector, avatar,
-  buttonAddCard, buttonEditProfile, buttonEditAvatar, validationVariables, myId } from '../scripts/utils/constants.js';
+  buttonAddCard, buttonEditProfile, buttonEditAvatar, validationVariables, myId, config } from '../scripts/utils/constants.js';
 
 import UserInfo from '../scripts/components/UserInfo.js';
 import Section from '../scripts/components/Section.js';
@@ -46,7 +46,7 @@ Array.of(formEditionValidator, formNewCardValidator, formEditAvatarValidator).fo
 let cardSection = new Section({}, cardsContainerSelector);
 
 // Создание экземпляра класса, описывающего запросы к серверу
-const api = new Api();
+const api = new Api(config);
 
 // Обработка промисов по загрузки изначальных карточек и информации с сервера на страницу
 Promise.all([api.getWebInfo(), api.getCards()])
@@ -115,9 +115,9 @@ function toggleLikeCard(id, isLiked) {
 function handleFormEditionSubmit(inputValues, buttonSave) {
     userInfo.setUserInfo(inputValues);
     renderLoading(true, buttonSave);
-    api.sendWebInfo(inputValues, buttonSave);
-
-    popupEdition.close();
+    api.sendWebInfo(inputValues, buttonSave)
+      .then(popupEdition.close())
+      .catch((err) => console.log(err));
 };
 
 // Функция добавления новой карточки пользователем и отправки данных на сервер
@@ -130,10 +130,9 @@ function handleNewElement(inputValues, buttonSave) {
     inputValues.ownerId = myId;
 
     renderCard(inputValues);
+    popupNewCard.close();
   })
     .catch((err) => console.log(err));
-
-  popupNewCard.close();
 };
 
 // Функция изменения аватара и отправки данных на сервер
@@ -141,15 +140,14 @@ function handleEditAvatar(inputValues, buttonSave) {
   avatar.src = inputValues.avatar;
   renderLoading(true, buttonSave);
   api.sendAvatar(inputValues.avatar, buttonSave)
-
-  popupEditionAvatar.close();
+    .then(popupEditionAvatar.close())
+    .catch((err) => console.log(err));
 };
 
 // Функция удаления с сервера и разметки карточки
 function handleRemoveCard(card, id) {
-  api.removeCard(id)
-  card.remove();
-  card = null;
+  api.removeCard(id);
+  card.deleteCard();
 }
 
 // Функция отрисовывания ожидания загрузки

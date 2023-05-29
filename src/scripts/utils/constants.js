@@ -54,6 +54,12 @@ const validationVariables = {
   popupErrorTypeSelector: '.popup__error_type_'
 };
 
+// Объект настроек для класса Api
+const config = {
+  url: "https://mesto.nomoreparties.co/v1/cohort-66",
+  token: "11d9edf0-d595-4b63-9e37-e0fd6cd15a36"
+}
+
 export { popupOpened, popup, popupCloseButton,
   formSelector, formEditionSelector, formNewCardSelector, formEditAvatarSelector, inputSelector,
   popupEditionSelector, popupNewCardSelector, popupPhotoSelector, popupEditAvatarSelector, popupRemoveCardSelector,
@@ -61,7 +67,7 @@ export { popupOpened, popup, popupCloseButton,
   cardsContainerSelector, avatar, buttonsSave,
   nameUser, professionUser, nameInput, professionInput,
   buttonSaveSelector, buttonAddCard, buttonEditProfile, buttonEditAvatar,
-  validationVariables, myId, counterLikesSelector }
+  validationVariables, myId, counterLikesSelector, config }
 
 
 

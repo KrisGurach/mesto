@@ -51,7 +51,7 @@ export default class Card {
     return this._cardElement;
   };
 
-  _handleLike = () => { 
+  _handleLike = () => {
     this._buttonLike.classList.toggle(likeActive);
 
     if (this._buttonLike.classList.contains(likeActive)) {
@@ -65,8 +65,13 @@ export default class Card {
   };
 
   _handleRemove = () => {
-    this._openPopupRemoveCard(this._cardElement, this._id);
+    this._openPopupRemoveCard(this, this._id);
   };
+
+  deleteCard = () => {
+    this._cardElement.remove();
+    this._cardElement = null;
+  }
 
   _clickHandlerWrapper = () => {
     this._handleCardClick({name: this._place, link: this._link});
