@@ -61,25 +61,25 @@ export default class Api {
   };
 
   removeCard = (id) => {
-    fetch(this._url + "/cards/" + id, {
+    return fetch(this._url + "/cards/" + id, {
       method: "DELETE",
       headers: {
         authorization: this._token
       }
     })
-    .catch((err) => console.log(err));
+    .then((res) => res.ok ? Promise.resolve() : Promise.reject(`Ошибка: ${res.status}`));
   };
 
   toggleLikeCard = (cardId, isLiked) => {
     const method = isLiked ? "PUT" : "DELETE";
 
-    fetch(this._url + `/cards/${cardId}/likes`, {
+    return fetch(this._url + `/cards/${cardId}/likes`, {
       method: method,
       headers: {
         authorization: this._token
       }
     })
-    .catch((err) => console.log(err));
+    .then((res) => res.ok ? Promise.resolve() : Promise.reject(`Ошибка: ${res.status}`));
   };
 
   sendAvatar = (link) => {
@@ -92,7 +92,8 @@ export default class Api {
       body: JSON.stringify({
         avatar: link
       })
-    });
+    })
+    .then((res) => res.ok ? Promise.resolve() : Promise.reject(`Ошибка: ${res.status}`));
   };
 }
 

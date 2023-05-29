@@ -34,6 +34,7 @@ popupPhoto.setEventListeners();
 
 // Вызов функции удаления карточки
 const popupRemoveCard = new PopupWithRemove(popupRemoveCardSelector, handleRemoveCard);
+popupRemoveCard.setEventListeners();
 
 // Вызов функции запуска валидации формы
 const formEditionValidator = new FormValidator(validationVariables, formEditionSelector);
@@ -102,21 +103,22 @@ function handleCardClick(data) {
 
 // Функция открытия попапа удаления карточки
 function openPopupRemoveCard(card, id) {
-  popupRemoveCard.open();
-  popupRemoveCard.setEventListeners(card, id);
+  popupRemoveCard.open(card, id);
 }
 
 // Функция, отправляющая информацию о смене состояния лайка карточки на сервер
 function toggleLikeCard(id, isLiked) {
-  api.toggleLikeCard(id, isLiked);
+  return api.toggleLikeCard(id, isLiked);
 }
 
 // Функция, отвечющая за редактирование информации  и отправки данных на сервер
 function handleFormEditionSubmit(inputValues, buttonSave) {
-    userInfo.setUserInfo(inputValues);
     renderLoading(true, buttonSave);
     api.updateProfileData(inputValues, buttonSave)
-      .then(popupEdition.close())
+      .then(() => {
+        userInfo.setUserInfo(inputValues);
+        popupEdition.close();
+      })
       .catch((err) => console.log(err))
       .finally(renderLoading(false, buttonSave));
 };
@@ -139,23 +141,32 @@ function handleNewElement(inputValues, buttonSave) {
 
 // Функция изменения аватара и отправки данных на сервер
 function handleEditAvatar(inputValues, buttonSave) {
-  avatar.src = inputValues.avatar;
   renderLoading(true, buttonSave);
   api.sendAvatar(inputValues.avatar, buttonSave)
-    .then(popupEditionAvatar.close())
+    .then(() => {
+      avatar.src = inputValues.avatar;
+      popupEditionAvatar.close()
+    })
     .catch((err) => console.log(err))
     .finally(renderLoading(false, buttonSave));
 };
 
 // Функция удаления с сервера и разметки карточки
 function handleRemoveCard(card, id) {
-  api.removeCard(id);
-  card.deleteCard();
+  api.removeCard(id)
+    .then(card.deleteCard())
+    .catch((err) => console.log(err));
 }
 
 // Функция отрисовывания ожидания загрузки
 function renderLoading(isLoading, buttonSave) {
-  debugger;buttonSave.textContent = isLoading ? 'Сохранение...' : buttonSave.value;
+  if (isLoading) {
+    buttonSave.textContent = 'Сохранение...';
+    buttonSave.disabled = true;
+  } else {
+    buttonSave.textContent = buttonSave.value;
+    buttonSave.disabled = false;
+  }
 }
 
 // Открытие и закрытие окна редактирования профиля

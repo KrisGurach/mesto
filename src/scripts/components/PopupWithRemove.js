@@ -8,13 +8,19 @@ export default  class PopupWithRemove extends Popup {
     this._form = this._popupType.querySelector(formSelector);
     }
 
-    setEventListeners(card, id) {
+    setEventListeners() {
       super.setEventListeners();
       this._form.addEventListener('submit', (evt) => {
         evt.preventDefault();
-        this._callback(card, id);
+        this._callback(this._card, this._id);
         this.close();
       })
+    }
+
+    open(card, id) {
+      super.open();
+      this._card = card;
+      this._id = id;
     }
   }
 

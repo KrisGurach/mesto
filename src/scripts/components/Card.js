@@ -51,16 +51,23 @@ export default class Card {
     return this._cardElement;
   };
 
-  _handleLike = () => {
+  _toggleLike = () => {
     this._buttonLike.classList.toggle(likeActive);
+  }
 
-    if (this._buttonLike.classList.contains(likeActive)) {
-      this._toggleLikeCard(this._id, true);
-      this._counterLikes.textContent = parseInt(this._counterLikes.textContent) + 1;
-    }
-    else {
-      this._toggleLikeCard(this._id, false);
-      this._counterLikes.textContent = parseInt(this._counterLikes.textContent) - 1;
+  _handleLike = () => {
+    if (!this._buttonLike.classList.contains(likeActive)) {
+      this._toggleLikeCard(this._id, true)
+        .then(() => {
+          this._toggleLike();
+          this._counterLikes.textContent = parseInt(this._counterLikes.textContent) + 1;
+        })
+    } else {
+      this._toggleLikeCard(this._id, false)
+        .then(() => {
+          this._toggleLike();
+          this._counterLikes.textContent = parseInt(this._counterLikes.textContent) - 1;
+      })
     }
   };
 
@@ -70,7 +77,6 @@ export default class Card {
 
   deleteCard = () => {
     this._cardElement.remove();
-    this._cardElement = null;
   }
 
   _clickHandlerWrapper = () => {
