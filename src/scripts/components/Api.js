@@ -1,5 +1,3 @@
-import { renderLoading } from '../../pages/index.js'
-
 export default class Api {
   constructor({ url, token }) {
     this._url = url;

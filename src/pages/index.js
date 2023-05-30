@@ -162,7 +162,10 @@ function handleEditAvatar(inputValues, buttonSave) {
 // Функция удаления с сервера и разметки карточки
 function handleRemoveCard(card, id) {
   api.removeCard(id)
-    .then(card.deleteCard())
+    .then(() => {
+      card.deleteCard();
+      popupRemoveCard.close();
+    })
     .catch((err) => console.log(err));
 }
 

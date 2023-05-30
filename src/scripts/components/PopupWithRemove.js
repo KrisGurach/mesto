@@ -13,7 +13,6 @@ export default  class PopupWithRemove extends Popup {
       this._form.addEventListener('submit', (evt) => {
         evt.preventDefault();
         this._callback(this._card, this._id);
-        this.close();
       })
     }
 

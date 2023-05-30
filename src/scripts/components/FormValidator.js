@@ -58,10 +58,11 @@ export default class FormValidator {
   };
 
   removeErrorOpenForm() {
+    this._toggleButtonState();
+
     this._inputList.forEach(input => {
       const errorInputType = this._form.querySelector(`${this._validationVariables.popupErrorTypeSelector}${input.name}`);
       this._hideInputError(input, errorInputType);
-      this._toggleButtonState();
     });
   };
 }

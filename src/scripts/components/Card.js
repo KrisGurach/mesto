@@ -54,18 +54,11 @@ export default class Card {
     return this._cardElement;
   };
 
-  _toggleLike = () => {
-    this._buttonLike.classList.toggle(likeActive);
-  }
-
   updateLike = (isLiked) => {
-    if (isLiked) {
-      this._toggleLike();
-      this._counterLikes.textContent = parseInt(this._counterLikes.textContent) + 1;
-    } else {
-      this._toggleLike();
-      this._counterLikes.textContent = parseInt(this._counterLikes.textContent) - 1;
-    }
+    this._buttonLike.classList.toggle(likeActive);
+
+    const count = isLiked ? 1 : -1;
+    this._counterLikes.textContent = parseInt(this._counterLikes.textContent) + count;
   }
 
   _handleLike = () => {
