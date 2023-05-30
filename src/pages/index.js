@@ -64,7 +64,7 @@ Promise.all([api.getWebInfo(), api.getCards()])
   })
   .catch((err) => console.log(err));
 
-// Функция
+// Функция, добавляющая готовую карточку в разметку
 function renderCard(data) {
   cardSection.addItem(getCardElement(data));
 }

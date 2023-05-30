@@ -9,7 +9,7 @@ export default class Api {
   }
 
   getCards = () => {
-    return fetch(
+    return fetch (
       this._url + "/cards", {
         headers: {
           authorization: this._token
