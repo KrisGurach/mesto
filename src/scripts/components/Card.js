@@ -2,7 +2,7 @@ import { elementSelector, photoSelector, placeSelector, likeSelector, likeActive
   removeSelector, counterLikesSelector } from '../utils/constants.js';
 
 export default class Card {
-  constructor(data, templateSelector, handleCardClick, openPopupRemoveCard, toggleLikeCard) {
+  constructor(data, templateSelector, handleCardClick, handleDeleteClick, toggleLikeCard) {
     this._place = data.place;
     this._link = data.link;
 
@@ -21,7 +21,7 @@ export default class Card {
     this._counterLikes = this._cardElement.querySelector(counterLikesSelector);
 
     this._handleCardClick = handleCardClick;
-    this._openPopupRemoveCard = openPopupRemoveCard;
+    this._handleDeleteClick = handleDeleteClick;
     this._toggleLikeCard = toggleLikeCard;
   };
 
@@ -67,7 +67,7 @@ export default class Card {
   };
 
   _handleRemove = () => {
-    this._openPopupRemoveCard(this, this._id);
+    this._handleDeleteClick(this, this._id);
   };
 
   deleteCard = () => {

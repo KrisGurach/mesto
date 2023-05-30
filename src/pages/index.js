@@ -44,7 +44,7 @@ const formEditAvatarValidator = new FormValidator(validationVariables, formEditA
 Array.of(formEditionValidator, formNewCardValidator, formEditAvatarValidator).forEach(validator => validator.enableValidation());
 
 // Создание перезаписывающегося экземпляра класса добавления карточек
-let cardSection = new Section({}, cardsContainerSelector);
+const cardSection = new Section((item) => renderCard(item), cardsContainerSelector);
 
 // Создание экземпляра класса, описывающего запросы к серверу
 const api = new Api(config);
@@ -53,24 +53,14 @@ const api = new Api(config);
 let myId;
 
 Promise.all([api.getWebInfo(), api.getCards()])
-  .then((results) => {
-    const webInfo = results[0];
+  .then(([webInfo, webCards]) => {
     myId = webInfo._id;
-
-    const webCards = results[1];
 
     userInfo.setWebUserInfo(webInfo);
 
-    let initialCards = [];
+    const initialCards = webCards.map((webCard) => handleWebCard(webCard, myId));
 
-    webCards.forEach((webCard) => {
-      const cardInfo = handleWebCard(webCard, myId);
-      initialCards.push(cardInfo);
-    });
-
-    cardSection = new Section({ items: initialCards, renderer: (item) => renderCard(item) }, cardsContainerSelector);
-
-    cardSection.renderAll();
+    cardSection.renderAll(initialCards);
   })
   .catch((err) => console.log(err));
 
@@ -120,43 +110,43 @@ function toggleLikeCard(card, id, isLiked) {
 
 // Функция, отвечющая за редактирование информации  и отправки данных на сервер
 function handleFormEditionSubmit(inputValues, buttonSave) {
-    renderLoading(true, buttonSave);
-    api.updateProfileData(inputValues, buttonSave)
-      .then(() => {
-        userInfo.setUserInfo(inputValues);
-        popupEdition.close();
-      })
-      .catch((err) => console.log(err))
-      .finally(renderLoading(false, buttonSave));
+  popupEdition.renderLoading(true, buttonSave);
+  api.updateProfileData(inputValues, buttonSave)
+    .then(() => {
+      userInfo.setUserInfo(inputValues);
+      popupEdition.close();
+    })
+    .catch((err) => console.log(err))
+    .finally(popupEdition.renderLoading(false, buttonSave));
 };
 
 // Функция добавления новой карточки пользователем и отправки данных на сервер
 function handleNewElement(inputValues, buttonSave) {
-  renderLoading(true, buttonSave);
+  popupNewCard.renderLoading(true, buttonSave);
   api.sendNewCard(inputValues, buttonSave)
     .then((cardInfo) => {
-    inputValues.likes = cardInfo.likes;
-    inputValues.id = cardInfo._id;
-    inputValues.ownerId = cardInfo.owner._id;
-    inputValues.myId = myId;
+      inputValues.likes = cardInfo.likes;
+      inputValues.id = cardInfo._id;
+      inputValues.ownerId = cardInfo.owner._id;
+      inputValues.myId = myId;
 
     renderCard(inputValues);
     popupNewCard.close();
   })
     .catch((err) => console.log(err))
-    .finally(renderLoading(false, buttonSave));
+    .finally(popupNewCard.renderLoading(false, buttonSave));
 };
 
 // Функция изменения аватара и отправки данных на сервер
 function handleEditAvatar(inputValues, buttonSave) {
-  renderLoading(true, buttonSave);
+  popupEditionAvatar.renderLoading(true, buttonSave);
   api.sendAvatar(inputValues.avatar, buttonSave)
     .then(() => {
       avatar.src = inputValues.avatar;
       popupEditionAvatar.close()
     })
     .catch((err) => console.log(err))
-    .finally(renderLoading(false, buttonSave));
+    .finally(popupEditionAvatar.renderLoading(false, buttonSave));
 };
 
 // Функция удаления с сервера и разметки карточки
@@ -169,20 +159,9 @@ function handleRemoveCard(card, id) {
     .catch((err) => console.log(err));
 }
 
-// Функция отрисовывания ожидания загрузки
-function renderLoading(isLoading, buttonSave) {
-  if (isLoading) {
-    buttonSave.textContent = 'Сохранение...';
-    buttonSave.disabled = true;
-  } else {
-    buttonSave.textContent = buttonSave.value;
-    buttonSave.disabled = false;
-  }
-}
-
 // Открытие и закрытие окна редактирования профиля
 buttonEditProfile.addEventListener('click', function(){
-  formEditionValidator.removeErrorOpenForm();
+  formEditionValidator.removeErrors();
 
   const info  = userInfo.getUserInfo();
   nameInput.value = info.name;
@@ -193,19 +172,16 @@ buttonEditProfile.addEventListener('click', function(){
 
 // Открытие и закрытие окна добавления новых фотографий
 buttonAddCard.addEventListener('click', function(){
-  formNewCardValidator.removeErrorOpenForm();
+  formNewCardValidator.removeErrors();
   popupNewCard.open();
 });
 
 // Открытие и закрытие окна редактирования аватара
 buttonEditAvatar.addEventListener('click', function(){
-  formEditAvatarValidator.removeErrorOpenForm();
+  formEditAvatarValidator.removeErrors();
   popupEditionAvatar.open();
 })
 
-
-
-export  { renderLoading }
 
 
 

@@ -28,6 +28,17 @@ export default class PopupWithForm extends Popup {
     });
   }
 
+  // Функция отрисовывания ожидания загрузки
+ renderLoading(isLoading, buttonSave) {
+  if (isLoading) {
+    buttonSave.textContent = 'Сохранение...';
+    buttonSave.disabled = true;
+  } else {
+    buttonSave.textContent = buttonSave.value;
+    buttonSave.disabled = false;
+  }
+}
+
   close() {
     super.close();
     this._form.reset();
