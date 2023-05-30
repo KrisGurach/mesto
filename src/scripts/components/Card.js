@@ -1,12 +1,15 @@
 import { elementSelector, photoSelector, placeSelector, likeSelector, likeActive,
-  removeSelector, counterLikesSelector, myId } from '../utils/constants.js';
+  removeSelector, counterLikesSelector } from '../utils/constants.js';
 
 export default class Card {
   constructor(data, templateSelector, handleCardClick, openPopupRemoveCard, toggleLikeCard) {
     this._place = data.place;
     this._link = data.link;
+
     this._ownerId = data.ownerId;
+    this._myId = data.myId;
     this._id = data.id;
+
     this._templateSelector = templateSelector;
     this._cardElement = this._getTemplate();
     this._cardImage = this._cardElement.querySelector(photoSelector);
@@ -40,7 +43,7 @@ export default class Card {
     this._cardImage.src = this._link;
     this._counterLikes.textContent = this._likesCount;
 
-    if (this._ownerId === myId) {
+    if (this._ownerId === this._myId) {
       this._buttonRemove.classList.add('element__remove_active');
     }
 
@@ -55,20 +58,19 @@ export default class Card {
     this._buttonLike.classList.toggle(likeActive);
   }
 
-  _handleLike = () => {
-    if (!this._buttonLike.classList.contains(likeActive)) {
-      this._toggleLikeCard(this._id, true)
-        .then(() => {
-          this._toggleLike();
-          this._counterLikes.textContent = parseInt(this._counterLikes.textContent) + 1;
-        })
+  updateLike = (isLiked) => {
+    if (isLiked) {
+      this._toggleLike();
+      this._counterLikes.textContent = parseInt(this._counterLikes.textContent) + 1;
     } else {
-      this._toggleLikeCard(this._id, false)
-        .then(() => {
-          this._toggleLike();
-          this._counterLikes.textContent = parseInt(this._counterLikes.textContent) - 1;
-      })
+      this._toggleLike();
+      this._counterLikes.textContent = parseInt(this._counterLikes.textContent) - 1;
     }
+  }
+
+  _handleLike = () => {
+    const isLiked = !this._buttonLike.classList.contains(likeActive);
+    this._toggleLikeCard(this, this._id, isLiked);
   };
 
   _handleRemove = () => {

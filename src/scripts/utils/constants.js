@@ -24,8 +24,6 @@ const likeSelector = '.element__like';
 const likeActive = 'element__like_active';
 const removeSelector = '.element__remove';
 
-const myId = '2e1486c131f2c47e1507d015';
-
 // Поиск DOM-элементов
 const avatar = document.querySelector('.profile__avatar');
 
@@ -67,7 +65,7 @@ export { popupOpened, popup, popupCloseButton,
   cardsContainerSelector, avatar, buttonsSave,
   nameUser, professionUser, nameInput, professionInput,
   buttonSaveSelector, buttonAddCard, buttonEditProfile, buttonEditAvatar,
-  validationVariables, myId, counterLikesSelector, config }
+  validationVariables, counterLikesSelector, config }
 
 
 

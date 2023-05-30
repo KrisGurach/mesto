@@ -12,7 +12,7 @@ import { formEditionSelector, formNewCardSelector, formEditAvatarSelector,
   popupEditionSelector, popupNewCardSelector, popupPhotoSelector, popupEditAvatarSelector, popupRemoveCardSelector,
   nameInput, professionInput, nameUser, professionUser,
   cardsContainerSelector,  gallerySelector, avatar,
-  buttonAddCard, buttonEditProfile, buttonEditAvatar, validationVariables, myId, config } from '../scripts/utils/constants.js';
+  buttonAddCard, buttonEditProfile, buttonEditAvatar, validationVariables, config } from '../scripts/utils/constants.js';
 
 import UserInfo from '../scripts/components/UserInfo.js';
 import Section from '../scripts/components/Section.js';
@@ -50,9 +50,13 @@ let cardSection = new Section({}, cardsContainerSelector);
 const api = new Api(config);
 
 // Обработка промисов по загрузки изначальных карточек и информации с сервера на страницу
+let myId;
+
 Promise.all([api.getWebInfo(), api.getCards()])
   .then((results) => {
     const webInfo = results[0];
+    myId = webInfo._id;
+
     const webCards = results[1];
 
     userInfo.setWebUserInfo(webInfo);
@@ -60,7 +64,7 @@ Promise.all([api.getWebInfo(), api.getCards()])
     let initialCards = [];
 
     webCards.forEach((webCard) => {
-      const cardInfo = handleWebCard(webCard);
+      const cardInfo = handleWebCard(webCard, myId);
       initialCards.push(cardInfo);
     });
 
@@ -76,7 +80,7 @@ function renderCard(data) {
 }
 
 // Функция, обрабатывающая массив информации об одной карточки с сервера
-function handleWebCard(webCard) {
+function handleWebCard(webCard, myId) {
   let cardInfo = {};
 
   cardInfo.place = webCard.name;
@@ -84,6 +88,7 @@ function handleWebCard(webCard) {
   cardInfo.likes = webCard.likes;
   cardInfo.isLikeOwner = webCard.likes.some((like) => like._id === myId);
   cardInfo.ownerId = webCard.owner._id;
+  cardInfo.myId = myId;
   cardInfo.id = webCard._id;
 
   return cardInfo;
@@ -107,8 +112,10 @@ function openPopupRemoveCard(card, id) {
 }
 
 // Функция, отправляющая информацию о смене состояния лайка карточки на сервер
-function toggleLikeCard(id, isLiked) {
-  return api.toggleLikeCard(id, isLiked);
+function toggleLikeCard(card, id, isLiked) {
+  api.toggleLikeCard(id, isLiked)
+    .then(card.updateLike(isLiked))
+    .catch((err) => console.log(err));
 }
 
 // Функция, отвечющая за редактирование информации  и отправки данных на сервер
@@ -130,7 +137,8 @@ function handleNewElement(inputValues, buttonSave) {
     .then((cardInfo) => {
     inputValues.likes = cardInfo.likes;
     inputValues.id = cardInfo._id;
-    inputValues.ownerId = myId;
+    inputValues.ownerId = cardInfo.owner._id;
+    inputValues.myId = myId;
 
     renderCard(inputValues);
     popupNewCard.close();
