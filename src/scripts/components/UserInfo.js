@@ -18,6 +18,10 @@ export default class UserInfo {
      this._profession.textContent = inputValues.profession;
   }
 
+  setAvatar(avatar) {
+    this._avatar.src = avatar;
+  }
+
   setWebUserInfo(info) {
     this._name.textContent = info.name;
     this._profession.textContent = info.about;

@@ -50,15 +50,15 @@ const cardSection = new Section((item) => renderCard(item), cardsContainerSelect
 const api = new Api(config);
 
 // Обработка промисов по загрузки изначальных карточек и информации с сервера на страницу
-let myId;
+let currentUserId;
 
 Promise.all([api.getWebInfo(), api.getCards()])
   .then(([webInfo, webCards]) => {
-    myId = webInfo._id;
+    currentUserId = webInfo._id;
 
     userInfo.setWebUserInfo(webInfo);
 
-    const initialCards = webCards.map((webCard) => handleWebCard(webCard, myId));
+    const initialCards = webCards.map((webCard) => prepareCardData(webCard));
 
     cardSection.renderAll(initialCards);
   })
@@ -70,15 +70,15 @@ function renderCard(data) {
 }
 
 // Функция, обрабатывающая массив информации об одной карточки с сервера
-function handleWebCard(webCard, myId) {
+function prepareCardData(webCard) {
   let cardInfo = {};
 
   cardInfo.place = webCard.name;
   cardInfo.link = webCard.link;
   cardInfo.likes = webCard.likes;
-  cardInfo.isLikeOwner = webCard.likes.some((like) => like._id === myId);
+  cardInfo.isLikeOwner = webCard.likes.some((like) => like._id === currentUserId);
   cardInfo.ownerId = webCard.owner._id;
-  cardInfo.myId = myId;
+  cardInfo.currentUserId = currentUserId;
   cardInfo.id = webCard._id;
 
   return cardInfo;
@@ -104,49 +104,44 @@ function openPopupRemoveCard(card, id) {
 // Функция, отправляющая информацию о смене состояния лайка карточки на сервер
 function toggleLikeCard(card, id, isLiked) {
   api.toggleLikeCard(id, isLiked)
-    .then(card.updateLike(isLiked))
+    .then(() => card.updateLike(isLiked))
     .catch((err) => console.log(err));
 }
 
 // Функция, отвечющая за редактирование информации  и отправки данных на сервер
-function handleFormEditionSubmit(inputValues, buttonSave) {
-  popupEdition.renderLoading(true, buttonSave);
-  api.updateProfileData(inputValues, buttonSave)
+function handleFormEditionSubmit(inputValues) {
+  popupEdition.renderLoading(true);
+  api.updateProfileData(inputValues)
     .then(() => {
       userInfo.setUserInfo(inputValues);
       popupEdition.close();
     })
     .catch((err) => console.log(err))
-    .finally(popupEdition.renderLoading(false, buttonSave));
+    .finally(() => popupEdition.renderLoading(false));
 };
 
 // Функция добавления новой карточки пользователем и отправки данных на сервер
-function handleNewElement(inputValues, buttonSave) {
-  popupNewCard.renderLoading(true, buttonSave);
-  api.sendNewCard(inputValues, buttonSave)
-    .then((cardInfo) => {
-      inputValues.likes = cardInfo.likes;
-      inputValues.id = cardInfo._id;
-      inputValues.ownerId = cardInfo.owner._id;
-      inputValues.myId = myId;
-
-    renderCard(inputValues);
-    popupNewCard.close();
+function handleNewElement(inputValues) {
+  popupNewCard.renderLoading(true);
+  api.sendNewCard(inputValues)
+    .then((webCard) => {
+      renderCard(prepareCardData(webCard));
+      popupNewCard.close();
   })
     .catch((err) => console.log(err))
-    .finally(popupNewCard.renderLoading(false, buttonSave));
+    .finally(() => popupNewCard.renderLoading(false));
 };
 
 // Функция изменения аватара и отправки данных на сервер
-function handleEditAvatar(inputValues, buttonSave) {
-  popupEditionAvatar.renderLoading(true, buttonSave);
-  api.sendAvatar(inputValues.avatar, buttonSave)
+function handleEditAvatar(inputValues) {
+  popupEditionAvatar.renderLoading(true);
+  api.sendAvatar(inputValues.avatar)
     .then(() => {
-      avatar.src = inputValues.avatar;
-      popupEditionAvatar.close()
+      userInfo.setAvatar(inputValues.avatar);
+      popupEditionAvatar.close();
     })
     .catch((err) => console.log(err))
-    .finally(popupEditionAvatar.renderLoading(false, buttonSave));
+    .finally(() => popupEditionAvatar.renderLoading(false));
 };
 
 // Функция удаления с сервера и разметки карточки

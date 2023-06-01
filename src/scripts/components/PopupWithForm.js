@@ -24,18 +24,18 @@ export default class PopupWithForm extends Popup {
     this._form.addEventListener("submit", (evt) => {
       evt.preventDefault();
       const inputValues = this._getInputValues();
-      this._callback(inputValues, this._buttonSave);
+      this._callback(inputValues);
     });
   }
 
   // Функция отрисовывания ожидания загрузки
- renderLoading(isLoading, buttonSave) {
+ renderLoading(isLoading) {
   if (isLoading) {
-    buttonSave.textContent = 'Сохранение...';
-    buttonSave.disabled = true;
+    this._buttonSave.textContent = 'Сохранение...';
+    this._buttonSave.disabled = true;
   } else {
-    buttonSave.textContent = buttonSave.value;
-    buttonSave.disabled = false;
+    this._buttonSave.textContent = this._buttonSave.value;
+    this._buttonSave.disabled = false;
   }
 }
 

@@ -31,7 +31,7 @@ export default class Api {
         about: inputValues.profession
       })
     })
-    .then((res) => res.ok ? Promise.resolve() : Promise.reject(`Ошибка: ${res.status}`));
+    .then((res) => this._getResponseData(res));
   };
 
   getWebInfo = () => {
@@ -65,7 +65,7 @@ export default class Api {
         authorization: this._token
       }
     })
-    .then((res) => res.ok ? Promise.resolve() : Promise.reject(`Ошибка: ${res.status}`));
+    .then((res) => this._getResponseData(res));
   };
 
   toggleLikeCard = (cardId, isLiked) => {
@@ -77,7 +77,7 @@ export default class Api {
         authorization: this._token
       }
     })
-    .then((res) => res.ok ? Promise.resolve() : Promise.reject(`Ошибка: ${res.status}`));
+    .then((res) => this._getResponseData(res));
   };
 
   sendAvatar = (link) => {
@@ -91,7 +91,7 @@ export default class Api {
         avatar: link
       })
     })
-    .then((res) => res.ok ? Promise.resolve() : Promise.reject(`Ошибка: ${res.status}`));
+    .then((res) => this._getResponseData(res));
   };
 }
 

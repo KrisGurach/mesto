@@ -7,7 +7,7 @@ export default class Card {
     this._link = data.link;
 
     this._ownerId = data.ownerId;
-    this._myId = data.myId;
+    this._currentUserId = data.currentUserId;
     this._id = data.id;
 
     this._templateSelector = templateSelector;
@@ -43,7 +43,7 @@ export default class Card {
     this._cardImage.src = this._link;
     this._counterLikes.textContent = this._likesCount;
 
-    if (this._ownerId === this._myId) {
+    if (this._ownerId === this._currentUserId) {
       this._buttonRemove.classList.add('element__remove_active');
     }
 
@@ -55,10 +55,11 @@ export default class Card {
   };
 
   updateLike = (isLiked) => {
+    debugger;
     this._buttonLike.classList.toggle(likeActive);
 
-    const count = isLiked ? 1 : -1;
-    this._counterLikes.textContent = parseInt(this._counterLikes.textContent) + count;
+    const difference = isLiked ? 1 : -1;
+    this._counterLikes.textContent = parseInt(this._counterLikes.textContent) + difference;
   }
 
   _handleLike = () => {
@@ -72,16 +73,17 @@ export default class Card {
 
   deleteCard = () => {
     this._cardElement.remove();
+    this._cardElement = null;
   }
 
-  _clickHandlerWrapper = () => {
+  _handleImageClick = () => {
     this._handleCardClick({name: this._place, link: this._link});
   }
 
   _setEventListeners() {
     this._buttonLike.addEventListener('click', this._handleLike);
     this._buttonRemove.addEventListener('click', this._handleRemove);
-    this._cardImage.addEventListener('click', this._clickHandlerWrapper);
+    this._cardImage.addEventListener('click', this._handleImageClick);
   };
 }
 
