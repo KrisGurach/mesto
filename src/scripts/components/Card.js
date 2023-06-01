@@ -54,8 +54,15 @@ export default class Card {
     return this._cardElement;
   };
 
+  disableLike = () => {
+    this._buttonLike.disabled = true;
+  }
+
+  enableLike = () => {
+    this._buttonLike.disabled = false;
+  }
+
   updateLike = (isLiked) => {
-    debugger;
     this._buttonLike.classList.toggle(likeActive);
 
     const difference = isLiked ? 1 : -1;

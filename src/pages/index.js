@@ -103,9 +103,11 @@ function openPopupRemoveCard(card, id) {
 
 // Функция, отправляющая информацию о смене состояния лайка карточки на сервер
 function toggleLikeCard(card, id, isLiked) {
+  card.disableLike();
   api.toggleLikeCard(id, isLiked)
     .then(() => card.updateLike(isLiked))
-    .catch((err) => console.log(err));
+    .catch((err) => console.log(err))
+    .finally(() => card.enableLike());
 }
 
 // Функция, отвечющая за редактирование информации  и отправки данных на сервер
